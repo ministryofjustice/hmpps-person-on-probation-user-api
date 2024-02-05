@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.hmppstemplatepackagename.integration
+package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.integration
 
 import org.junit.jupiter.api.Test
 
