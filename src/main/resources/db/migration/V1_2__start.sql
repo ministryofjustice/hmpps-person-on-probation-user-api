@@ -1,1 +1,0 @@
-Alter table test_user_data add name varchar(30)
