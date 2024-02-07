@@ -1,9 +1,8 @@
-package uk.gov.justice.digital.hmpps.hmppsresettlementpassportapi.config
+package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config
 
 import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.reactive.server.WebTestClient
-import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config.ErrorCode
 
 fun <T : WebTestClient.ResponseSpec> T.expectErrorResponse(
   status: HttpStatus,

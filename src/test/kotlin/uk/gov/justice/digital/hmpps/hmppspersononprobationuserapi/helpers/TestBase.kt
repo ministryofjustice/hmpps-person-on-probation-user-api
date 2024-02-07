@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.hmppsresettlementpassportapi.helpers
+package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.helpers
 
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
