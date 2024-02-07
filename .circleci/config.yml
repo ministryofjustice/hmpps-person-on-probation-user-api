@@ -21,6 +21,7 @@ jobs:
       postgres_username: "person-on-probation-user"
       postgres_password: "person-on-probation-user"
     steps:
+      - setup_remote_docker
       - checkout
       - restore_cache:
           keys:
