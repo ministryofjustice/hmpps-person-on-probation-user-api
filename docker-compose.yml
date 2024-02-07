@@ -3,8 +3,7 @@ services:
   hmpps-person-on-probation-user-api:
     build:
       context: .
-    networks:
-      - hmpps
+    network_mode: "host"
     container_name: hmpps-person-on-probation-user-api
     ports:
       - "8081:8080"
