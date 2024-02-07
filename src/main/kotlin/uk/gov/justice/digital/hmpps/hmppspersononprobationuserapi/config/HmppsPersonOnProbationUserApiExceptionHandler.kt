@@ -67,3 +67,5 @@ data class ErrorResponse(
   ) :
     this(status.value(), errorCode, userMessage, developerMessage, moreInfo)
 }
+
+enum class ErrorCode(val errorCode: Int)
