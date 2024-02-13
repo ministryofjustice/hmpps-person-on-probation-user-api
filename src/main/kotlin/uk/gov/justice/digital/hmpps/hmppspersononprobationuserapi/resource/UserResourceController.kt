@@ -20,7 +20,7 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.service.UserSe
 @RequestMapping("/person-on-probation-user", produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.IMAGE_JPEG_VALUE])
 class UserResourceController(private val userService: UserService) {
 
-  @GetMapping("/user/{crnId}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @GetMapping("/user/{crn}", produces = [MediaType.APPLICATION_JSON_VALUE])
   @Operation(summary = "Get User Info by CRN Id", description = "Person on Probation User Data based on crn id")
   @ApiResponses(
     value = [
@@ -50,12 +50,12 @@ class UserResourceController(private val userService: UserService) {
       ),
     ],
   )
-  fun getUserByCrnId(
+  fun getUserByCrn(
     @Schema(example = "123", required = true)
-    @PathVariable("crnId")
+    @PathVariable("crn")
     @Parameter(required = true)
-    crnId: String,
-  ) = userService.getUserByCRN(crnId)
+    crn: String,
+  ) = userService.getUserByCRN(crn)
 
   @GetMapping("/users/all", produces = [MediaType.APPLICATION_JSON_VALUE])
   @Operation(summary = "Get All users detaisl", description = "Person on Probation User List")

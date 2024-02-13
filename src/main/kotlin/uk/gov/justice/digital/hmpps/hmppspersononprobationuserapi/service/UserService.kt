@@ -10,9 +10,9 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.repository
 class UserService(private val userRepository: UserRepository) {
 
   @Transactional
-  open fun getUserByCRN(crnId: String): UserEntity? {
-    val user = userRepository.findByCrn(crnId)
-      ?: throw ResourceNotFoundException("User with CRN id $crnId not found in database")
+  open fun getUserByCRN(crn: String): UserEntity? {
+    val user = userRepository.findByCrn(crn)
+      ?: throw ResourceNotFoundException("User with CRN $crn not found in database")
     return user
   }
 

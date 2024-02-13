@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.UserEntity
 @Repository
 interface UserRepository : JpaRepository<UserEntity, Long> {
-  fun findByCrn(crnId: String): UserEntity?
+  fun findByCrn(crn: String): UserEntity?
 }

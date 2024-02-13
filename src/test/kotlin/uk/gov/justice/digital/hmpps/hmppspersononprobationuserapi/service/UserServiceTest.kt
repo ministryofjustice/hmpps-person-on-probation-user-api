@@ -27,7 +27,7 @@ class UserServiceTest {
   }
 
   @Test
-  fun `test getUserByCrnId - returns a user details`() {
+  fun `test getUserByCrn - returns a user details`() {
     val userEntity = UserEntity(1, "abc", "123", "user1@gmail.com", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
     Mockito.`when`(userRepository.findByCrn(userEntity.crn)).thenReturn(userEntity)
     val result = userService.getUserByCRN("abc")
