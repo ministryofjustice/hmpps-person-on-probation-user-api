@@ -1,6 +1,13 @@
 server:
   shutdown: immediate
 
+# Base URLs of downstream APIs. Switch the comments to use the real dev services instead of the test stubs
+api:
+  base:
+    url:
+      oauth: https://sign-in-dev.hmpps.service.justice.gov.uk/auth
+      resettlementpassport: https://resettlement-passport-api-dev.hmpps.service.justice.gov.uk
+
 management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0

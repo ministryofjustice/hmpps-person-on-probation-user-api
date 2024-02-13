@@ -8,6 +8,12 @@ management.endpoint:
   health.cache.time-to-live: 0
   info.cache.time-to-live: 0
 
+api:
+  base:
+    url:
+      oauth: http://localhost:9091
+      resettlementpassport: http://localhost:9092
+
 spring:
   devtools:
     add-properties: true
