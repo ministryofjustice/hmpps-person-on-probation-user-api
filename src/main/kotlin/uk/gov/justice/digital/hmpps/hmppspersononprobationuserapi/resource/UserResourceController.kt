@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.MediaType
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -18,6 +19,7 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.service.UserSe
 @RestController
 @Validated
 @RequestMapping("/person-on-probation-user", produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.IMAGE_JPEG_VALUE])
+@PreAuthorize("hasRole('RESETTLEMENT_PASSPORT_EDIT')")
 class UserResourceController(private val userService: UserService) {
 
   @GetMapping("/user/{crn}", produces = [MediaType.APPLICATION_JSON_VALUE])
