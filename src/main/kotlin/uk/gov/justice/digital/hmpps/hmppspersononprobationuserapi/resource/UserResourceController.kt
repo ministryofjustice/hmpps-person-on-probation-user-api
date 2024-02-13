@@ -90,39 +90,4 @@ class UserResourceController(private val userService: UserService) {
     ],
   )
   fun getAllUsers() = userService.getAllUsers()
-
-  @GetMapping("/user/test", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Get User Info by CRN Id", description = "Person on Probation User Data based on crn id")
-  @ApiResponses(
-    value = [
-      ApiResponse(
-        responseCode = "200",
-        description = "Successful Operation",
-      ),
-      ApiResponse(
-        responseCode = "401",
-        description = "Unauthorized to access this endpoint",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
-      ),
-      ApiResponse(
-        responseCode = "403",
-        description = "Forbidden, requires an appropriate role",
-        content = [
-          Content(
-            mediaType = "application/json",
-            schema = Schema(implementation = ErrorResponse::class),
-          ),
-        ],
-      ),
-      ApiResponse(
-        responseCode = "400",
-        description = "Incorrect input options provided",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
-      ),
-    ],
-  )
-  fun testAPI(): String {
-    println("API Invoked")
-    return "API Invoked"
-  }
 }
