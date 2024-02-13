@@ -7,6 +7,27 @@ spring:
     name: hmpps-person-on-probation-user-api
   codec:
     max-in-memory-size: 10MB
+  mvc:
+    async:
+      request-timeout: 1m
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${api.base.url.oauth}/.well-known/jwks.json
+
+      client:
+        registration:
+          PERSON_ON_PROBATION_USER_API:
+            provider: hmpps-auth
+            client-id: ${PERSON_ON_PROBATION_USER_API_CLIENT_ID}
+            client-secret: ${PERSON_ON_PROBATION_USER_API_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+        provider:
+          hmpps-auth:
+            token-uri: ${api.base.url.oauth}/oauth/token
+
 
   jackson:
     date-format: "yyyy-MM-dd HH:mm:ss"

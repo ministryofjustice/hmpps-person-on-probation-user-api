@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "crn": "abc",
+    "cprId": "123",
+    "email": "user1@gmail.com",
+    "verified": false,
+    "creationDate": "2024-02-12T14:33:26.520566",
+    "modifiedDate": "2024-02-12T14:33:26.520566"
+  },
+  {
+    "id": 2,
+    "crn": "xyz",
+    "cprId": "456",
+    "email": "user2@gmail.com",
+    "verified": false,
+    "creationDate": "2024-02-12T14:33:26.520566",
+    "modifiedDate": "2024-02-12T14:33:26.520566"
+  }
+]
