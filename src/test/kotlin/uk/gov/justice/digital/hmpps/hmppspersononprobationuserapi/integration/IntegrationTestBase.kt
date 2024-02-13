@@ -35,7 +35,7 @@ abstract class IntegrationTestBase : TestBase() {
   }
 
   protected fun setAuthorisation(
-    user: String = "RESETTLEMENTPASSPORT_ADM",
+    user: String = "PERSONONPROBATION_ADM",
     roles: List<String> = listOf(),
     scopes: List<String> = listOf(),
     authSource: String = "none",
