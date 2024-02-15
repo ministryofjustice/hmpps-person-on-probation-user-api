@@ -28,10 +28,14 @@ class UserServiceTest {
 
   @Test
   fun `test getUserByCrn - returns a user details`() {
-    val userEntity = UserEntity(1, "abc", "123", "user1@gmail.com", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
-    Mockito.`when`(userRepository.findByCrn(userEntity.crn)).thenReturn(userEntity)
+    val userEntity1 = UserEntity(1, "abc", "123", "user1@gmail.com", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
+    val userEntity2 = UserEntity(2, "abc", "123456", "user2@gmail.com", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
+    val userEntityList = emptyList<UserEntity>().toMutableList()
+    userEntityList.add(userEntity1)
+    userEntityList.add(userEntity2)
+    Mockito.`when`(userRepository.findByCrn(userEntity1.crn)).thenReturn(userEntityList)
     val result = userService.getUserByCRN("abc")
-    Assertions.assertEquals(userEntity, result)
+    Assertions.assertEquals(userEntityList, result)
   }
 
   @Test

@@ -16,21 +16,21 @@ data class UserEntity(
   val id: Long?,
 
   @Column(name = "crn")
-  val crn: String,
+  var crn: String,
 
   @Column(name = "cpr_id")
-  val cprId: String,
+  var cprId: String,
 
   @Column(name = "email")
-  val email: String,
+  var email: String,
 
   @Column(name = "verified")
-  val verified: Boolean,
+  var verified: Boolean?,
 
   @Column(name = "when_created")
   val creationDate: LocalDateTime,
 
   @Column(name = "when_modified")
-  val modifiedDate: LocalDateTime,
+  var modifiedDate: LocalDateTime,
 
 )
