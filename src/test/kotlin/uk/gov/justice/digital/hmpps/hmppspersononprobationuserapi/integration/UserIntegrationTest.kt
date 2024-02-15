@@ -172,4 +172,126 @@ class UserIntegrationTest : IntegrationTestBase() {
       .expectBody()
       .json(expectedOutput2)
   }
+
+  @Test
+  fun `Get a Person on Probation all Users  - Unauthorized`() {
+    webTestClient.get()
+      .uri("/person-on-probation-user/users/all")
+      .exchange()
+      .expectStatus().isUnauthorized
+  }
+
+  @Test
+  fun `Get a Person on Probation User by CRN - Unauthorized`() {
+    val crn = "abc"
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/$crn/user")
+      .exchange()
+      .expectStatus().isUnauthorized
+  }
+
+  @Test
+  fun `Create  Person on Probation User by CRN Id - Unuthorized`() {
+    var crn = "axb"
+    webTestClient.post()
+      .uri("/person-on-probation-user/$crn/user")
+      .bodyValue(
+        UserPost(
+          crn = "abc",
+          email = "user4@gmail.com",
+          cprId = "123456",
+          verified = true,
+        ),
+      )
+      .exchange()
+      .expectStatus().isUnauthorized
+  }
+
+  @Test
+  fun `Update Person on Probation User by CRN Id - Unuthorized`() {
+    val crn = "axb"
+    val id = 1
+    webTestClient.patch()
+      .uri("/person-on-probation-user/$crn/user/$id")
+      .bodyValue(
+        UserPatch(
+          crn = "newcrn",
+          cprId = "456345",
+          email = "test2@test.com",
+          verified = true,
+        ),
+      )
+      .exchange()
+      .expectStatus().isUnauthorized
+  }
+
+  @Test
+  fun `Get a Person on Probation User by Id - Forbidden`() {
+    val crn = "abc"
+    val id = 1
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/$crn/user/$id")
+      .headers(setAuthorisation())
+      .exchange()
+      .expectStatus().isForbidden
+  }
+
+  @Test
+  fun `Get a Person on Probation all Users  - Forbidden`() {
+    webTestClient.get()
+      .uri("/person-on-probation-user/users/all")
+      .headers(setAuthorisation())
+      .exchange()
+      .expectStatus().isForbidden
+  }
+
+  @Test
+  fun `Get a Person on Probation User by CRN - Forbidden`() {
+    val crn = "abc"
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/$crn/user")
+      .headers(setAuthorisation())
+      .exchange()
+      .expectStatus().isForbidden
+  }
+
+  @Test
+  fun `Create  Person on Probation User by CRN Id - Forbidden`() {
+    var crn = "axb"
+    webTestClient.post()
+      .uri("/person-on-probation-user/$crn/user")
+      .headers(setAuthorisation())
+      .bodyValue(
+        UserPost(
+          crn = "abc",
+          email = "user4@gmail.com",
+          cprId = "123456",
+          verified = true,
+        ),
+      )
+      .exchange()
+      .expectStatus().isForbidden
+  }
+
+  @Test
+  fun `Update Person on Probation User by CRN Id - Forbidden`() {
+    val crn = "axb"
+    val id = 1
+    webTestClient.patch()
+      .uri("/person-on-probation-user/$crn/user/$id")
+      .headers(setAuthorisation())
+      .bodyValue(
+        UserPatch(
+          crn = "newcrn",
+          cprId = "456345",
+          email = "test2@test.com",
+          verified = true,
+        ),
+      )
+      .exchange()
+      .expectStatus().isForbidden
+  }
 }
