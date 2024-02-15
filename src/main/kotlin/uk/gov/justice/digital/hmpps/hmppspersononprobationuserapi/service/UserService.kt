@@ -65,8 +65,8 @@ class UserService(private val userRepository: UserRepository) {
   @Transactional
   fun updateUser(existingUser: UserEntity, existingUserPatchDTO: UserPatch): UserEntity {
     val now = LocalDateTime.now()
-    existingUser.crn = existingUserPatchDTO.crn.toString()
-    existingUser.verified = existingUserPatchDTO.verified ?: throw ValidationException("verified must be updated")
+    existingUser.crn = existingUserPatchDTO.crn ?: existingUser.crn
+    existingUser.verified = existingUserPatchDTO.verified ?: existingUser.verified
     existingUser.cprId = existingUserPatchDTO.cprId ?: existingUser.cprId
     existingUser.email = existingUserPatchDTO.email ?: existingUser.email
     existingUser.modifiedDate = now
