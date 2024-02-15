@@ -14,10 +14,6 @@ generic-service:
     host: app-hostname.local # override per environment
     tlsSecretName: person-on-probation-user-api-cert
 
-  securityContext:
-    runAsNonRoot: true
-    runAsUser: 1000
-
   # Environment variables to load into the deployment
   env:
     JAVA_OPTS: "-Xmx512m"
