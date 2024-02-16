@@ -262,7 +262,7 @@ class UserIntegrationTest : IntegrationTestBase() {
   fun `Create  Person on Probation User by CRN Id - Forbidden`() {
     var crn = "axb"
     webTestClient.post()
-      .uri("/person-on-probation-user/$crn/user")
+      .uri("/person-on-probation-user/user")
       .headers(setAuthorisation())
       .bodyValue(
         UserPost(
@@ -277,7 +277,7 @@ class UserIntegrationTest : IntegrationTestBase() {
   }
 
   @Test
-  fun `Update Person on Probation User by CRN Id - Forbidden`() {
+  fun `Update Person on Probation User by Id - Forbidden`() {
     val crn = "axb"
     val id = 1
     webTestClient.patch()
