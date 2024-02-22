@@ -1,0 +1,1 @@
+Alter table person_on_probation_user alter column one_login_urn type varchar(255);
