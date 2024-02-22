@@ -36,11 +36,17 @@ class UserService(private val userRepository: UserRepository) {
 
     if (userPost.crn != null && userPost.cprId != null &&
       userPost.email != null &&
-      userPost.verified != null
+      userPost.verified != null && userPost.nomsId != null && userPost.oneLoginUrn != null
+
     ) {
-      val userExists = userRepository.findByEmail(userPost.email!!)
-      if (userExists != null) {
+      val userExistsWithEmail = userRepository.findByEmail(userPost.email!!)
+      if (userExistsWithEmail != null) {
         throw DuplicateDataFoundException("User with Email ${userPost.email} already exists in the  database")
+      }
+
+      val userExistsWithURN = userRepository.findByOneLoginUrn(userPost.oneLoginUrn!!)
+      if (userExistsWithURN != null) {
+        throw DuplicateDataFoundException("User with One Login URN  ${userPost.oneLoginUrn} already exists in the  database")
       }
 
       val userEntity = UserEntity(
@@ -51,6 +57,8 @@ class UserService(private val userRepository: UserRepository) {
         verified = userPost.verified,
         creationDate = now,
         modifiedDate = now,
+        nomsId = userPost.nomsId!!,
+        oneLoginUrn = userPost.oneLoginUrn!!,
       )
       return userRepository.save(userEntity)
     }
@@ -69,6 +77,8 @@ class UserService(private val userRepository: UserRepository) {
     existingUser.verified = existingUserPatchDTO.verified ?: existingUser.verified
     existingUser.cprId = existingUserPatchDTO.cprId ?: existingUser.cprId
     existingUser.email = existingUserPatchDTO.email ?: existingUser.email
+    existingUser.nomsId = existingUserPatchDTO.nomsId ?: existingUser.nomsId
+    existingUser.oneLoginUrn = existingUserPatchDTO.oneLoginUrn ?: existingUser.oneLoginUrn
     existingUser.modifiedDate = now
     return userRepository.save(existingUser)
   }
@@ -77,6 +87,13 @@ class UserService(private val userRepository: UserRepository) {
   fun getUserByCrnAndUserId(crn: String, userId: Long): UserEntity? {
     val user = userRepository.findByIdAndCrn(userId, crn)
       ?: throw ResourceNotFoundException("User with Id $userId and CRN $crn not found in database")
+    return user
+  }
+
+  @Transactional
+  fun getUserByUrn(urn: String): UserEntity? {
+    val user = userRepository.findByOneLoginUrn(urn)
+      ?: throw ResourceNotFoundException("User with One Login URN $urn not found in database")
     return user
   }
 }

@@ -10,4 +10,6 @@ interface UserRepository : JpaRepository<UserEntity, Long> {
   fun findByEmail(email: String): UserEntity?
 
   fun findByIdAndCrn(id: Long?, crn: String): UserEntity?
+
+  fun findByOneLoginUrn(oneloginUrn: String): UserEntity?
 }

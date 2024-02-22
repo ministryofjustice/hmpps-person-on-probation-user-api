@@ -33,4 +33,10 @@ data class UserEntity(
   @Column(name = "when_modified")
   var modifiedDate: LocalDateTime,
 
+  @Column(name = "noms_id")
+  var nomsId: String,
+
+  @Column(name = "one_login_urn")
+  var oneLoginUrn: String,
+
 )

@@ -5,6 +5,8 @@ data class UserPost(
   var email: String? = null,
   var cprId: String? = null,
   var verified: Boolean? = null,
+  var nomsId: String? = null,
+  var oneLoginUrn: String? = null,
 )
 
 data class UserPatch(
@@ -12,4 +14,6 @@ data class UserPatch(
   var cprId: String? = null,
   var email: String? = null,
   var verified: Boolean?,
+  var nomsId: String? = null,
+  var oneLoginUrn: String? = null,
 )

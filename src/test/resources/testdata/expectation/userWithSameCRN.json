@@ -6,15 +6,19 @@
   "email": "user1@gmail.com",
   "verified": true,
   "creationDate": "2024-02-12T14:33:26.520566",
-  "modifiedDate": "2024-02-12T14:33:26.520566"
+  "modifiedDate": "2024-02-12T14:33:26.520566",
+  "nomsId": "G123",
+  "oneLoginUrn": "urn1"
 },
   {
     "id": 3,
     "crn": "abc",
     "cprId": "123456",
-    "email": "user4@gmail.com",
+    "email": "user5@gmail.com",
     "verified": true,
     "creationDate": "2024-02-12T14:33:26.520566",
-    "modifiedDate": "2024-02-12T14:33:26.520566"
+    "modifiedDate": "2024-02-12T14:33:26.520566",
+    "nomsId": "G12345",
+    "oneLoginUrn": "urn7"
   }
 ]

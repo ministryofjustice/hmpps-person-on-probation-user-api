@@ -28,7 +28,7 @@ class UserRepositoryTest : TestBase() {
 
   @Test
   fun `test get saved user`() {
-    val userEntity1 = UserEntity(null, "abc", "123", "user1@gmail.com", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
+    val userEntity1 = UserEntity(null, "abc", "123", "user1@gmail.com", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "crn1")
     userRepository.save(userEntity1)
     val userList = userRepository.findAll()
 
@@ -37,7 +37,7 @@ class UserRepositoryTest : TestBase() {
 
   @Test
   fun `test persist new user`() {
-    val userEntity1 = UserEntity(null, "abc", "123", "user1@gmail.com", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
+    val userEntity1 = UserEntity(null, "abc", "123", "user1@gmail.com", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "crn1")
     userRepository.save(userEntity1)
 
     val assessmentFromDatabase = userRepository.findAll()[0]
