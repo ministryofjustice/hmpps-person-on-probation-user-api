@@ -246,4 +246,46 @@ class UserResourceController(private val userService: UserService) {
       )
     return userService.updateUser(userEntity, userPatchDTO)
   }
+
+  @GetMapping("/onelogin/user/{urn}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @Operation(summary = "Get User Info by One Login URN", description = "Person on Probation User Data based on one login urn")
+  @ApiResponses(
+    value = [
+      ApiResponse(
+        responseCode = "200",
+        description = "Successful Operation",
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "Not found",
+        content = [Content(mediaType = MediaType.APPLICATION_JSON_VALUE)],
+      ),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized to access this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden, requires an appropriate role",
+        content = [
+          Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ErrorResponse::class),
+          ),
+        ],
+      ),
+      ApiResponse(
+        responseCode = "400",
+        description = "Incorrect input options provided",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getUserByUrn(
+    @Schema(example = "123", required = true)
+    @PathVariable("urn")
+    @Parameter(required = true)
+    urn: String,
+  ) = userService.getUserByUrn(urn)
 }

@@ -102,6 +102,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           email = "test1@test.com",
           cprId = "123",
           verified = true,
+          nomsId = "G123",
+          oneLoginUrn = "urn6",
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -119,6 +121,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           cprId = "456345",
           email = "test2@test.com",
           verified = true,
+          nomsId = "G12345",
+          oneLoginUrn = "urn5",
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -152,9 +156,11 @@ class UserIntegrationTest : IntegrationTestBase() {
       .bodyValue(
         UserPost(
           crn = "abc",
-          email = "user4@gmail.com",
+          email = "user5@gmail.com",
           cprId = "123456",
           verified = true,
+          nomsId = "G12345",
+          oneLoginUrn = "urn7",
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -202,6 +208,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           email = "user4@gmail.com",
           cprId = "123456",
           verified = true,
+          nomsId = "G123",
+          oneLoginUrn = "urn4",
         ),
       )
       .exchange()
@@ -260,7 +268,6 @@ class UserIntegrationTest : IntegrationTestBase() {
 
   @Test
   fun `Create  Person on Probation User by CRN Id - Forbidden`() {
-    var crn = "axb"
     webTestClient.post()
       .uri("/person-on-probation-user/user")
       .headers(setAuthorisation())
@@ -270,6 +277,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           email = "user4@gmail.com",
           cprId = "123456",
           verified = true,
+          nomsId = "G123",
+          oneLoginUrn = "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8",
         ),
       )
       .exchange()
@@ -293,5 +302,33 @@ class UserIntegrationTest : IntegrationTestBase() {
       )
       .exchange()
       .expectStatus().isForbidden
+  }
+
+  @Test
+  fun `Create Person on Probation User with duplicate one login urn `() {
+    var crn = "abc"
+    val id = 3
+    val expectedOutput = readFile("testdata/expectation/user2.json")
+    mockkStatic(LocalDateTime::class)
+    every { LocalDateTime.now() } returns fakeNow
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/$crn/user/$id")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody()
+      .json(expectedOutput)
+
+    expectedOutput.replace("user5@gmail.com", "user6@gmail.com")
+
+    webTestClient.post()
+      .uri("/person-on-probation-user/user")
+      .bodyValue(
+        expectedOutput,
+      )
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isBadRequest
   }
 }

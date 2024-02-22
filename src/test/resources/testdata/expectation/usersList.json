@@ -6,7 +6,9 @@
     "email": "user1@gmail.com",
     "verified": true,
     "creationDate": "2024-02-12T14:33:26.520566",
-    "modifiedDate": "2024-02-12T14:33:26.520566"
+    "modifiedDate": "2024-02-12T14:33:26.520566",
+    "nomsId": "G123",
+    "oneLoginUrn": "urn1"
   },
   {
     "id": 2,
@@ -15,6 +17,8 @@
     "email": "user2@gmail.com",
     "verified": true,
     "creationDate": "2024-02-12T14:33:26.520566",
-    "modifiedDate": "2024-02-12T14:33:26.520566"
+    "modifiedDate": "2024-02-12T14:33:26.520566",
+    "nomsId": "G12345",
+    "oneLoginUrn": "urn2"
   }
 ]
