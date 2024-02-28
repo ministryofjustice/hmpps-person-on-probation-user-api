@@ -83,7 +83,7 @@ workflows:
           pipeline_number: <<pipeline.number>>
           context:
             - hmpps-common-vars
-            - hmpps-person-on-probation-user-api-preprod
+            - hmpps-person-on-probation-user-service-preprod
           requires:
             - request-preprod-approval
           helm_timeout: 5m
