@@ -8,7 +8,9 @@
     "creationDate": "2024-02-12T14:33:26.520566",
     "modifiedDate": "2024-02-12T14:33:26.520566",
     "nomsId": "G123",
-    "oneLoginUrn": "urn1"
+    "oneLoginUrn": "urn1",
+    "prisonId": "MDI",
+    "releaseDate": "2024-12-31"
   },
   {
     "id": 2,
@@ -19,6 +21,8 @@
     "creationDate": "2024-02-12T14:33:26.520566",
     "modifiedDate": "2024-02-12T14:33:26.520566",
     "nomsId": "G12345",
-    "oneLoginUrn": "urn2"
+    "oneLoginUrn": "urn2",
+    "prisonId": "MDI",
+    "releaseDate": "2024-12-31"
   }
 ]

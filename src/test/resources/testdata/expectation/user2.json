@@ -7,5 +7,7 @@
   "creationDate": "2024-02-12T14:33:26.520566",
   "modifiedDate": "2024-02-12T14:33:26.520566",
   "nomsId": "G12345",
-  "oneLoginUrn": "urn7"
+  "oneLoginUrn": "urn7",
+  "prisonId": "MDI",
+  "releaseDate": "2024-12-31"
 }
