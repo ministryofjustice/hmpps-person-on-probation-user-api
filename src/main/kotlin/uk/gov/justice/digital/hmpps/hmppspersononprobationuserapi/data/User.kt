@@ -1,5 +1,7 @@
 package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data
 
+import java.time.LocalDate
+
 data class UserPost(
   var crn: String? = null,
   var email: String? = null,
@@ -7,6 +9,8 @@ data class UserPost(
   var verified: Boolean? = null,
   var nomsId: String? = null,
   var oneLoginUrn: String? = null,
+  var prisonId: String? = null,
+  var releaseDate: LocalDate? = null,
 )
 
 data class UserPatch(
@@ -16,4 +20,6 @@ data class UserPatch(
   var verified: Boolean?,
   var nomsId: String? = null,
   var oneLoginUrn: String? = null,
+  var prisonId: String? = null,
+  var releaseDate: LocalDate? = null,
 )

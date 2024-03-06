@@ -35,8 +35,8 @@ class UserService(private val userRepository: UserRepository) {
     val now = LocalDateTime.now()
 
     if (userPost.crn != null && userPost.cprId != null &&
-      userPost.email != null &&
-      userPost.verified != null && userPost.nomsId != null && userPost.oneLoginUrn != null
+      userPost.email != null && userPost.verified != null &&
+      userPost.nomsId != null && userPost.oneLoginUrn != null
 
     ) {
       val userExistsWithEmail = userRepository.findByEmail(userPost.email!!)
@@ -59,6 +59,8 @@ class UserService(private val userRepository: UserRepository) {
         modifiedDate = now,
         nomsId = userPost.nomsId!!,
         oneLoginUrn = userPost.oneLoginUrn!!,
+        prisonId = userPost.prisonId!!,
+        releaseDate = userPost.releaseDate!!,
       )
       return userRepository.save(userEntity)
     }
@@ -66,7 +68,10 @@ class UserService(private val userRepository: UserRepository) {
       "Request invalid. " +
         "cprId= ${userPost.cprId} " +
         "email=${userPost.email} " +
-        "verified=${userPost.verified} ",
+        "verified=${userPost.verified} " +
+        "prisonId=${userPost.prisonId} " +
+        "releaseDate=${userPost.releaseDate} ",
+
     )
   }
 
@@ -79,6 +84,9 @@ class UserService(private val userRepository: UserRepository) {
     existingUser.email = existingUserPatchDTO.email ?: existingUser.email
     existingUser.nomsId = existingUserPatchDTO.nomsId ?: existingUser.nomsId
     existingUser.oneLoginUrn = existingUserPatchDTO.oneLoginUrn ?: existingUser.oneLoginUrn
+    existingUser.prisonId = existingUserPatchDTO.prisonId ?: existingUser.prisonId
+    existingUser.releaseDate = existingUserPatchDTO.releaseDate ?: existingUser.releaseDate
+
     existingUser.modifiedDate = now
     return userRepository.save(existingUser)
   }

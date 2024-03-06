@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.UserPatch
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.UserPost
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 class UserIntegrationTest : IntegrationTestBase() {
@@ -104,6 +105,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           verified = true,
           nomsId = "G123",
           oneLoginUrn = "urn6",
+          prisonId = "MDI",
+          releaseDate = LocalDate.parse("2024-12-31"),
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -161,6 +164,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           verified = true,
           nomsId = "G12345",
           oneLoginUrn = "urn7",
+          prisonId = "MDI",
+          releaseDate = LocalDate.parse("2024-12-31"),
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -210,6 +215,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           verified = true,
           nomsId = "G123",
           oneLoginUrn = "urn4",
+          prisonId = "MDI",
+          releaseDate = LocalDate.parse("2024-12-31"),
         ),
       )
       .exchange()
@@ -279,6 +286,8 @@ class UserIntegrationTest : IntegrationTestBase() {
           verified = true,
           nomsId = "G123",
           oneLoginUrn = "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8",
+          prisonId = "MDI",
+          releaseDate = LocalDate.parse("2024-12-31"),
         ),
       )
       .exchange()
