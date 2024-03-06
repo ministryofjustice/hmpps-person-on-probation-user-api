@@ -36,8 +36,7 @@ class UserService(private val userRepository: UserRepository) {
 
     if (userPost.crn != null && userPost.cprId != null &&
       userPost.email != null && userPost.verified != null &&
-      userPost.nomsId != null && userPost.oneLoginUrn != null &&
-      userPost.prisonId != null && userPost.releaseDate != null
+      userPost.nomsId != null && userPost.oneLoginUrn != null
 
     ) {
       val userExistsWithEmail = userRepository.findByEmail(userPost.email!!)
