@@ -60,7 +60,7 @@ class UserService(private val userRepository: UserRepository) {
         nomsId = userPost.nomsId!!,
         oneLoginUrn = userPost.oneLoginUrn!!,
         prisonId = userPost.prisonId,
-        releaseDate = userPost.releaseDate
+        releaseDate = userPost.releaseDate,
       )
       return userRepository.save(userEntity)
     }
