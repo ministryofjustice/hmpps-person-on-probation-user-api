@@ -5,10 +5,10 @@ generic-service:
   ingress:
     host: person-on-probation-user-api.hmpps.service.justice.gov.uk
 
-    env:
-      APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json
-      API_BASE_URL_OAUTH: https://sign-in.hmpps.service.justice.gov.uk/auth
-      API_BASE_URL_RESETTLEMENTPASSPORT: https://resettlement-passport-api.hmpps.service.justice.gov.uk
+  env:
+    APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json
+    API_BASE_URL_OAUTH: https://sign-in.hmpps.service.justice.gov.uk/auth
+    API_BASE_URL_RESETTLEMENTPASSPORT: https://resettlement-passport-api.hmpps.service.justice.gov.uk
 
 
 # CloudPlatform AlertManager receiver to route prometheus alerts to slack
