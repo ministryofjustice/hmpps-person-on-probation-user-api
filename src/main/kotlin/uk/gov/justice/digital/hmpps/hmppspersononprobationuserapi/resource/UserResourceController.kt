@@ -155,7 +155,7 @@ class UserResourceController(private val userService: UserService) {
   fun getAllUsers() = userService.getAllUsers()
 
   @PostMapping("/user", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Create Person on Probation User", description = "Create Person on Probation User")
+  @Operation(summary = "Create a Person on Probation User", description = "Create a person on probation User")
   @ApiResponses(
     value = [
       ApiResponse(
