@@ -39,11 +39,6 @@ class UserService(private val userRepository: UserRepository) {
       userPost.nomsId != null && userPost.oneLoginUrn != null
 
     ) {
-      val userExistsWithEmail = userRepository.findByEmail(userPost.email!!)
-      if (userExistsWithEmail != null) {
-        throw DuplicateDataFoundException("User with Email ${userPost.email} already exists in the  database")
-      }
-
       val userExistsWithURN = userRepository.findByOneLoginUrn(userPost.oneLoginUrn!!)
       if (userExistsWithURN != null) {
         throw DuplicateDataFoundException("User with One Login URN  ${userPost.oneLoginUrn} already exists in the  database")
