@@ -7,8 +7,6 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.Use
 interface UserRepository : JpaRepository<UserEntity, Long> {
   fun findByCrn(crn: String): MutableList<UserEntity>
 
-  fun findByEmail(email: String): UserEntity?
-
   fun findByIdAndCrn(id: Long?, crn: String): UserEntity?
 
   fun findByOneLoginUrn(oneloginUrn: String): UserEntity?
