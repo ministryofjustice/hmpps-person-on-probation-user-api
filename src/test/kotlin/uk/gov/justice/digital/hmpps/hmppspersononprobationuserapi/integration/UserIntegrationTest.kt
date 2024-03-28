@@ -4,8 +4,6 @@ import io.mockk.every
 import io.mockk.mockkStatic
 import org.junit.jupiter.api.Test
 import org.springframework.test.context.jdbc.Sql
-import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.UserPatch
-import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.UserPost
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -29,7 +27,7 @@ class UserIntegrationTest : IntegrationTestBase() {
 
   @Test
   fun `Get a Person on Probation User by Id - happy path`() {
-    val expectedOutput = readFile("testdata/expectation/user.json")
+    val expectedOutput = readFile("testdata/expectation/user-1.json")
     val crn = "abc"
     val id = 1
 
@@ -55,9 +53,10 @@ class UserIntegrationTest : IntegrationTestBase() {
 
   @Test
   fun `Create Person on Probation User with duplicate email `() {
-    var crn = "abc"
+    val crn = "abc"
     val id = 1
-    val expectedOutput = readFile("testdata/expectation/user.json")
+    val expectedOutput = readFile("testdata/expectation/user-3.json")
+    val expectedOutput2 = readFile("testdata/expectation/postuser-2.json")
     mockkStatic(LocalDateTime::class)
     every { LocalDateTime.now() } returns fakeNow
 
@@ -72,19 +71,31 @@ class UserIntegrationTest : IntegrationTestBase() {
     webTestClient.post()
       .uri("/person-on-probation-user/user")
       .bodyValue(
-        expectedOutput,
+        mapOf(
+          "crn" to "abc",
+          "email" to "user1@gmail.com",
+          "cprId" to "123",
+          "verified" to true,
+          "nomsId" to "G123",
+          "oneLoginUrn" to "urn8",
+          "prisonId" to "MDI",
+          "releaseDate" to LocalDate.parse("2024-12-31"),
+        ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
       .exchange()
-      .expectStatus().isBadRequest
+      .expectStatus().isOk
+      .expectHeader().contentType("application/json")
+      .expectBody()
+      .json(expectedOutput2)
   }
 
   @Test
   fun `Create and Update Person on Probation User by CRN Id - happy path`() {
     var crn = "axb"
-    val id = 4
-    val expectedOutput = readFile("testdata/expectation/postuser.json")
-    val expectedOutput2 = readFile("testdata/expectation/patchuser.json")
+    val id = 5
+    val expectedOutput = readFile("testdata/expectation/postuser-1.json")
+    val expectedOutput2 = readFile("testdata/expectation/patchuser-1.json")
 
     mockkStatic(LocalDateTime::class)
     every { LocalDateTime.now() } returns fakeNow
@@ -98,15 +109,15 @@ class UserIntegrationTest : IntegrationTestBase() {
     webTestClient.post()
       .uri("/person-on-probation-user/user")
       .bodyValue(
-        UserPost(
-          crn = "axb",
-          email = "test1@test.com",
-          cprId = "123",
-          verified = true,
-          nomsId = "G123",
-          oneLoginUrn = "urn6",
-          prisonId = "MDI",
-          releaseDate = LocalDate.parse("2024-12-31"),
+        mapOf(
+          "crn" to "axb",
+          "email" to "test1@test.com",
+          "cprId" to "123",
+          "verified" to true,
+          "nomsId" to "G123",
+          "oneLoginUrn" to "urn6",
+          "prisonId" to "MDI",
+          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -119,13 +130,13 @@ class UserIntegrationTest : IntegrationTestBase() {
     webTestClient.patch()
       .uri("/person-on-probation-user/$crn/user/$id")
       .bodyValue(
-        UserPatch(
-          crn = "newcrn",
-          cprId = "456345",
-          email = "test2@test.com",
-          verified = true,
-          nomsId = "G12345",
-          oneLoginUrn = "urn5",
+        mapOf(
+          "crn" to "newcrn",
+          "cprId" to "456345",
+          "email" to "test2@test.com",
+          "verified" to true,
+          "nomsId" to "G12345",
+          "oneLoginUrn" to "urn5",
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -147,7 +158,7 @@ class UserIntegrationTest : IntegrationTestBase() {
 
   @Test
   fun `Get Person on Probation Users by CRN - happy path`() {
-    val expectedOutput = readFile("testdata/expectation/user2.json")
+    val expectedOutput = readFile("testdata/expectation/user-2.json")
     val expectedOutput2 = readFile("testdata/expectation/userWithSameCRN.json")
 
     val crn = "abc"
@@ -157,15 +168,15 @@ class UserIntegrationTest : IntegrationTestBase() {
     webTestClient.post()
       .uri("/person-on-probation-user/user")
       .bodyValue(
-        UserPost(
-          crn = "abc",
-          email = "user5@gmail.com",
-          cprId = "123456",
-          verified = true,
-          nomsId = "G12345",
-          oneLoginUrn = "urn7",
-          prisonId = "MDI",
-          releaseDate = LocalDate.parse("2024-12-31"),
+        mapOf(
+          "crn" to "abc",
+          "email" to "user5@gmail.com",
+          "cprId" to "123456",
+          "verified" to true,
+          "nomsId" to "G12345",
+          "oneLoginUrn" to "urn7",
+          "prisonId" to "MDI",
+          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -204,19 +215,19 @@ class UserIntegrationTest : IntegrationTestBase() {
 
   @Test
   fun `Create  Person on Probation User by CRN Id - Unuthorized`() {
-    var crn = "axb"
+    val crn = "axb"
     webTestClient.post()
       .uri("/person-on-probation-user/$crn/user")
       .bodyValue(
-        UserPost(
-          crn = "abc",
-          email = "user4@gmail.com",
-          cprId = "123456",
-          verified = true,
-          nomsId = "G123",
-          oneLoginUrn = "urn4",
-          prisonId = "MDI",
-          releaseDate = LocalDate.parse("2024-12-31"),
+        mapOf(
+          "crn" to "abc",
+          "email" to "user4@gmail.com",
+          "cprId" to "123456",
+          "verified" to true,
+          "nomsId" to "G123",
+          "oneLoginUrn" to "urn4",
+          "prisonId" to "MDI",
+          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .exchange()
@@ -230,11 +241,11 @@ class UserIntegrationTest : IntegrationTestBase() {
     webTestClient.patch()
       .uri("/person-on-probation-user/$crn/user/$id")
       .bodyValue(
-        UserPatch(
-          crn = "newcrn",
-          cprId = "456345",
-          email = "test2@test.com",
-          verified = true,
+        mapOf(
+          "crn" to "newcrn",
+          "cprId" to "456345",
+          "email" to "test2@test.com",
+          "verified" to true,
         ),
       )
       .exchange()
@@ -279,15 +290,15 @@ class UserIntegrationTest : IntegrationTestBase() {
       .uri("/person-on-probation-user/user")
       .headers(setAuthorisation())
       .bodyValue(
-        UserPost(
-          crn = "abc",
-          email = "user4@gmail.com",
-          cprId = "123456",
-          verified = true,
-          nomsId = "G123",
-          oneLoginUrn = "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8",
-          prisonId = "MDI",
-          releaseDate = LocalDate.parse("2024-12-31"),
+        mapOf(
+          "crn" to "abc",
+          "email" to "user4@gmail.com",
+          "cprId" to "123456",
+          "verified" to true,
+          "nomsId" to "G123",
+          "oneLoginUrn" to "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8",
+          "prisonId" to "MDI",
+          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .exchange()
@@ -302,11 +313,11 @@ class UserIntegrationTest : IntegrationTestBase() {
       .uri("/person-on-probation-user/$crn/user/$id")
       .headers(setAuthorisation())
       .bodyValue(
-        UserPatch(
-          crn = "newcrn",
-          cprId = "456345",
-          email = "test2@test.com",
-          verified = true,
+        mapOf(
+          "crn" to "newcrn",
+          "cprId" to "456345",
+          "email" to "test2@test.com",
+          "verified" to true,
         ),
       )
       .exchange()
@@ -315,9 +326,9 @@ class UserIntegrationTest : IntegrationTestBase() {
 
   @Test
   fun `Create Person on Probation User with duplicate one login urn `() {
-    var crn = "abc"
+    val crn = "abc"
     val id = 3
-    val expectedOutput = readFile("testdata/expectation/user2.json")
+    val expectedOutput = readFile("testdata/expectation/user-2.json")
     mockkStatic(LocalDateTime::class)
     every { LocalDateTime.now() } returns fakeNow
 
