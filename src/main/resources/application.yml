@@ -96,7 +96,7 @@ management:
     web:
       base-path: /
       exposure:
-        include: 'info, health'
+        include: 'info, health', prometheus
   endpoint:
     health:
       cache:
@@ -108,3 +108,5 @@ management:
     info:
       cache:
         time-to-live: 2000ms
+    prometheus:
+      enabled: true
