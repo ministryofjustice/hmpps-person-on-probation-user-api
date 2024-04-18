@@ -96,7 +96,7 @@ management:
     web:
       base-path: /
       exposure:
-        include: 'info, health', prometheus
+        include: 'info, health, prometheus'
   endpoint:
     health:
       cache:
