@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: person-on-probation-user-api-dashboard
-  namespace: hmpps-person-on-probation-user-service-preprod
+  name: plan-your-future-dashboard
+  namespace: hmpps-person-on-probation-user-service-dev
   labels:
-    grafana_dashboard: "person-on-probation-user-api-dashboard"
+    grafana_dashboard: "hmpps-plan-your-future-dashboard"
 data:
-  person-on-probation-user-api-dashboard.json: |
+  plan-your-future-dashboard.json: |
     {
-      "title":"Person On Probation User API Dashboard",
-      "uid": "person-on-probation-user-api-dashboard"
+      "title":"Plan Your Future Dashboard",
+      "uid": "plan-your-future-dashboard"
     }
