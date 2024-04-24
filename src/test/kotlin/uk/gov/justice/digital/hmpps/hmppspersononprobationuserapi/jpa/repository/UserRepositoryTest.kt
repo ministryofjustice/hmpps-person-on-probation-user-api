@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.helpers.TestBase
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.UserEntity
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @SpringBootTest
@@ -29,7 +28,7 @@ class UserRepositoryTest : TestBase() {
 
   @Test
   fun `test get saved user`() {
-    val userEntity1 = UserEntity(null, "abc", "123", "user1@gmail.com", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "crn1", "MDI", LocalDate.parse("2024-12-31"))
+    val userEntity1 = UserEntity(null, "abc", "123", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "crn1")
     userRepository.save(userEntity1)
     val userList = userRepository.findAll()
 
@@ -38,7 +37,7 @@ class UserRepositoryTest : TestBase() {
 
   @Test
   fun `test persist new user`() {
-    val userEntity1 = UserEntity(null, "abc", "123", "user1@gmail.com", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "crn1", "MDI", LocalDate.parse("2024-12-31"))
+    val userEntity1 = UserEntity(null, "abc", "123", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "crn1")
     userRepository.save(userEntity1)
 
     val assessmentFromDatabase = userRepository.findAll()[0]

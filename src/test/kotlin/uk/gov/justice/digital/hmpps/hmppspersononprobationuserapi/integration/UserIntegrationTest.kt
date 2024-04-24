@@ -4,7 +4,6 @@ import io.mockk.every
 import io.mockk.mockkStatic
 import org.junit.jupiter.api.Test
 import org.springframework.test.context.jdbc.Sql
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 class UserIntegrationTest : IntegrationTestBase() {
@@ -73,13 +72,10 @@ class UserIntegrationTest : IntegrationTestBase() {
       .bodyValue(
         mapOf(
           "crn" to "abc",
-          "email" to "user1@gmail.com",
           "cprId" to "123",
           "verified" to true,
           "nomsId" to "G123",
           "oneLoginUrn" to "urn8",
-          "prisonId" to "MDI",
-          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -111,13 +107,10 @@ class UserIntegrationTest : IntegrationTestBase() {
       .bodyValue(
         mapOf(
           "crn" to "axb",
-          "email" to "test1@test.com",
           "cprId" to "123",
           "verified" to true,
           "nomsId" to "G123",
           "oneLoginUrn" to "urn6",
-          "prisonId" to "MDI",
-          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -133,7 +126,6 @@ class UserIntegrationTest : IntegrationTestBase() {
         mapOf(
           "crn" to "newcrn",
           "cprId" to "456345",
-          "email" to "test2@test.com",
           "verified" to true,
           "nomsId" to "G12345",
           "oneLoginUrn" to "urn5",
@@ -170,13 +162,10 @@ class UserIntegrationTest : IntegrationTestBase() {
       .bodyValue(
         mapOf(
           "crn" to "abc",
-          "email" to "user5@gmail.com",
           "cprId" to "123456",
           "verified" to true,
           "nomsId" to "G12345",
           "oneLoginUrn" to "urn7",
-          "prisonId" to "MDI",
-          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -221,13 +210,10 @@ class UserIntegrationTest : IntegrationTestBase() {
       .bodyValue(
         mapOf(
           "crn" to "abc",
-          "email" to "user4@gmail.com",
           "cprId" to "123456",
           "verified" to true,
           "nomsId" to "G123",
           "oneLoginUrn" to "urn4",
-          "prisonId" to "MDI",
-          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .exchange()
@@ -244,7 +230,6 @@ class UserIntegrationTest : IntegrationTestBase() {
         mapOf(
           "crn" to "newcrn",
           "cprId" to "456345",
-          "email" to "test2@test.com",
           "verified" to true,
         ),
       )
@@ -292,13 +277,10 @@ class UserIntegrationTest : IntegrationTestBase() {
       .bodyValue(
         mapOf(
           "crn" to "abc",
-          "email" to "user4@gmail.com",
           "cprId" to "123456",
           "verified" to true,
           "nomsId" to "G123",
           "oneLoginUrn" to "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8",
-          "prisonId" to "MDI",
-          "releaseDate" to LocalDate.parse("2024-12-31"),
         ),
       )
       .exchange()
@@ -316,7 +298,6 @@ class UserIntegrationTest : IntegrationTestBase() {
         mapOf(
           "crn" to "newcrn",
           "cprId" to "456345",
-          "email" to "test2@test.com",
           "verified" to true,
         ),
       )
@@ -339,8 +320,6 @@ class UserIntegrationTest : IntegrationTestBase() {
       .expectStatus().isOk
       .expectBody()
       .json(expectedOutput)
-
-    expectedOutput.replace("user5@gmail.com", "user6@gmail.com")
 
     webTestClient.post()
       .uri("/person-on-probation-user/user")
