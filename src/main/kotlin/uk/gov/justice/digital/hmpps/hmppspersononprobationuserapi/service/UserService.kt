@@ -34,8 +34,7 @@ class UserService(private val userRepository: UserRepository) {
   fun createUser(userPost: UserPost): UserEntity {
     val now = LocalDateTime.now()
 
-    if (userPost.crn != null && userPost.cprId != null &&
-      userPost.email != null && userPost.verified != null &&
+    if (userPost.crn != null && userPost.cprId != null && userPost.verified != null &&
       userPost.nomsId != null && userPost.oneLoginUrn != null
 
     ) {
@@ -48,24 +47,18 @@ class UserService(private val userRepository: UserRepository) {
         id = null,
         crn = userPost.crn!!,
         cprId = userPost.cprId!!,
-        email = userPost.email!!,
         verified = userPost.verified,
         creationDate = now,
         modifiedDate = now,
         nomsId = userPost.nomsId!!,
         oneLoginUrn = userPost.oneLoginUrn!!,
-        prisonId = userPost.prisonId,
-        releaseDate = userPost.releaseDate,
       )
       return userRepository.save(userEntity)
     }
     throw ValidationException(
       "Request invalid. " +
         "cprId= ${userPost.cprId} " +
-        "email=${userPost.email} " +
-        "verified=${userPost.verified} " +
-        "prisonId=${userPost.prisonId} " +
-        "releaseDate=${userPost.releaseDate} ",
+        "verified=${userPost.verified} ",
 
     )
   }
@@ -76,11 +69,8 @@ class UserService(private val userRepository: UserRepository) {
     existingUser.crn = existingUserPatchDTO.crn ?: existingUser.crn
     existingUser.verified = existingUserPatchDTO.verified ?: existingUser.verified
     existingUser.cprId = existingUserPatchDTO.cprId ?: existingUser.cprId
-    existingUser.email = existingUserPatchDTO.email ?: existingUser.email
     existingUser.nomsId = existingUserPatchDTO.nomsId ?: existingUser.nomsId
     existingUser.oneLoginUrn = existingUserPatchDTO.oneLoginUrn ?: existingUser.oneLoginUrn
-    existingUser.prisonId = existingUserPatchDTO.prisonId ?: existingUser.prisonId
-    existingUser.releaseDate = existingUserPatchDTO.releaseDate ?: existingUser.releaseDate
 
     existingUser.modifiedDate = now
     return userRepository.save(existingUser)

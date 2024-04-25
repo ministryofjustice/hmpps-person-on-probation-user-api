@@ -2,12 +2,9 @@
   "id": 5,
   "crn": "axb",
   "cprId": "123",
-  "email": "test1@test.com",
   "verified": true,
   "creationDate": "2024-02-12T14:33:26.520566",
   "modifiedDate": "2024-02-12T14:33:26.520566",
   "nomsId": "G123",
-  "oneLoginUrn": "urn6",
-  "prisonId": "MDI",
-  "releaseDate": "2024-12-31"
+  "oneLoginUrn": "urn6"
 }
