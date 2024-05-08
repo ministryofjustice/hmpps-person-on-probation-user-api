@@ -1,4 +1,4 @@
-package uk.gov.justice.digital.hmpps.hmppsresettlementpassportapi.config
+package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config
 
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
