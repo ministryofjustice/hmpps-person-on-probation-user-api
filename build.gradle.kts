@@ -1,6 +1,6 @@
 plugins {
-  val kotlinVersion = "1.9.23"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "5.15.6"
+  val kotlinVersion = "2.0.0"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.0"
   kotlin("plugin.spring") version kotlinVersion
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("jacoco")
@@ -31,7 +31,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
   implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
-  runtimeOnly("org.flywaydb:flyway-core")
+  runtimeOnly("org.flywaydb:flyway-database-postgresql")
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   runtimeOnly("org.postgresql:postgresql:42.7.3")
 
