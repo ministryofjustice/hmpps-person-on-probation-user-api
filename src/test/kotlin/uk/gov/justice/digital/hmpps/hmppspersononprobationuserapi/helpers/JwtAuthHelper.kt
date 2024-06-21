@@ -1,7 +1,6 @@
 package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.helpers
 
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpHeaders
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
@@ -15,12 +14,12 @@ import java.util.UUID
 
 @Component
 class JwtAuthHelper {
-  private val keyPair: KeyPair
+  private val keyPair: KeyPair = createKeyPair()
 
-  init {
+  private fun createKeyPair(): KeyPair {
     val gen = KeyPairGenerator.getInstance("RSA")
     gen.initialize(2048)
-    keyPair = gen.generateKeyPair()
+    return gen.generateKeyPair()
   }
 
   @Bean
@@ -59,11 +58,11 @@ class JwtAuthHelper {
       .also { subject?.let { subject -> it["name"] = subject } }
       .let {
         Jwts.builder()
-          .setId(jwtId)
-          .setSubject(subject)
-          .addClaims(it.toMap())
-          .setExpiration(Date(System.currentTimeMillis() + expiryTime.toMillis()))
-          .signWith(keyPair.private, SignatureAlgorithm.RS256)
+          .id(jwtId)
+          .subject(subject)
+          .claims(it.toMap())
+          .expiration(Date(System.currentTimeMillis() + expiryTime.toMillis()))
+          .signWith(keyPair.private, Jwts.SIG.RS256)
           .compact()
       }
 }
