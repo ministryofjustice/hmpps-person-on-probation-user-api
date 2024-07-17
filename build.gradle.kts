@@ -1,6 +1,6 @@
 plugins {
   val kotlinVersion = "2.0.0"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.0"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.1"
   kotlin("plugin.spring") version kotlinVersion
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("jacoco")
