@@ -8,7 +8,6 @@ generic-service:
     host: person-on-probation-user-api-preprod.hmpps.service.justice.gov.uk
 
   env:
-    APPLICATIONINSIGHTS_CONFIGURATION_FILE: applicationinsights.dev.json
     API_BASE_URL_OAUTH: https://sign-in-preprod.hmpps.service.justice.gov.uk/auth
     API_BASE_URL_RESETTLEMENTPASSPORT: https://resettlement-passport-api-preprod.hmpps.service.justice.gov.uk
 
