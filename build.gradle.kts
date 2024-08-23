@@ -1,6 +1,6 @@
 plugins {
   val kotlinVersion = "2.0.10"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.2"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.4"
   kotlin("plugin.spring") version kotlinVersion
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("jacoco")
@@ -85,9 +85,6 @@ openApi {
 java {
   toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
-
-// Fix issue with springdoc-openapi-gradle-plugin https://github.com/springdoc/springdoc-openapi-gradle-plugin/issues/128
-project.tasks.named("forkedSpringBootRun").get().dependsOn(project.tasks.named("inspectClassesForKotlinIC"))
 
 tasks.test {
   finalizedBy(tasks.jacocoTestReport)
