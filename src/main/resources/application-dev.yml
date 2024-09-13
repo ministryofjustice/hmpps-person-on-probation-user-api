@@ -25,7 +25,7 @@ spring:
       ddl-auto: none
 
   datasource:
-    url: 'jdbc:postgresql://localhost:5432/person-on-probation-user?sslmode=prefer'
+    url: 'jdbc:postgresql://localhost:5433/person-on-probation-user?sslmode=prefer'
     username: person-on-probation-user
     password: person-on-probation-user
     hikari:
@@ -35,7 +35,7 @@ spring:
 
   flyway:
     enabled: true
-    url: jdbc:postgresql://localhost:5432/person-on-probation-user?sslmode=prefer
+    url: jdbc:postgresql://localhost:5433/person-on-probation-user?sslmode=prefer
     user: person-on-probation-user
     password: person-on-probation-user
 

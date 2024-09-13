@@ -14,12 +14,8 @@ parameters:
 jobs:
   validate:
     executor:
-      name: hmpps/java_localstack_postgres
-      jdk_tag: "21.0"
-      localstack_tag: "0.14.0"
-      postgres_tag: "14"
-      postgres_username: "person-on-probation-user"
-      postgres_password: "person-on-probation-user"
+      name: hmpps/java
+      tag: "21.0"
     steps:
       - setup_remote_docker
       - checkout
