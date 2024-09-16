@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.run.BootRun
+
 plugins {
   val kotlinVersion = "2.0.10"
   id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.4"
@@ -97,4 +99,9 @@ tasks.jacocoTestReport {
   reports {
     xml.required.set(true)
   }
+}
+
+tasks.named<BootRun>("bootRun") {
+  systemProperty("spring.profiles.active", project.findProperty("profiles")?.toString() ?: "dev")
+  systemProperty("server.port", project.findProperty("port")?.toString() ?: "8080")
 }

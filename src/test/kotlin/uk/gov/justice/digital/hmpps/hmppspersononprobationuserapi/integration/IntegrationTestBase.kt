@@ -10,7 +10,6 @@ import org.springframework.test.context.jdbc.SqlMergeMode
 import org.springframework.test.web.reactive.server.WebTestClient
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.helpers.JwtAuthHelper
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.helpers.TestBase
-import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.integration.wiremock.HmppsAuthMockServer
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
@@ -22,12 +21,6 @@ abstract class IntegrationTestBase : TestBase() {
 
   @Autowired
   protected lateinit var jwtAuthHelper: JwtAuthHelper
-
-  companion object {
-
-    @JvmField
-    val hmppsAuthMockServer = HmppsAuthMockServer()
-  }
 
   init {
     // Resolves an issue where Wiremock keeps previous sockets open from other tests causing connection resets
