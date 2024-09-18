@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
   val kotlinVersion = "2.0.10"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.4"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.5"
   kotlin("plugin.spring") version kotlinVersion
   id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
   id("jacoco")
@@ -20,8 +20,7 @@ repositories {
   mavenCentral()
 }
 
-// Can be removed after next spring boot upgrade
-extra["spring-framework.version"] = "6.1.12"
+
 
 dependencies {
   implementation("javax.servlet:javax.servlet-api:4.0.1")
