@@ -1,2 +1,2 @@
-DELETE from person_on_probation_user;
-ALTER SEQUENCE person_on_probation_user_id_seq RESTART WITH 1;
+DELETE from users;
+ALTER SEQUENCE users_id_seq RESTART WITH 1;

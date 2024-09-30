@@ -9,31 +9,22 @@ import jakarta.persistence.Table
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "users")
-data class UserEntity(
+@Table(name = "delegated_access")
+data class DelegatedAccessEntity(
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   val id: Long?,
 
-  @Column(name = "crn")
-  var crn: String,
+  @Column(name = "initiated_user_id")
+  var initiatedUserId: Int,
 
-  @Column(name = "cpr_id")
-  var cprId: String,
-
-  @Column(name = "verified")
-  var verified: Boolean?,
+  @Column(name = "delegated_user_id")
+  var delegatedUserId: Int,
 
   @Column(name = "when_created")
-  val creationDate: LocalDateTime,
+  val createdDate: LocalDateTime,
 
-  @Column(name = "when_modified")
-  var modifiedDate: LocalDateTime,
-
-  @Column(name = "noms_id")
-  var nomsId: String,
-
-  @Column(name = "one_login_urn")
-  var oneLoginUrn: String,
+  @Column(name = "when_deleted")
+  var deletedDate: LocalDateTime?,
 
 )
