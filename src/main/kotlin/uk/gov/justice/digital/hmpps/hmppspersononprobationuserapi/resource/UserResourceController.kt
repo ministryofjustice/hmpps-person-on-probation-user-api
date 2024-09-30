@@ -288,48 +288,4 @@ class UserResourceController(private val userService: UserService) {
     @Parameter(required = true)
     urn: String,
   ) = userService.getUserByUrn(urn)
-
- /* @GetMapping("/delegated/user/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Get Delegated User Info by Id", description = "Delegated person for Probation User Data based on  id")
-  @ApiResponses(
-    value = [
-      ApiResponse(
-        responseCode = "200",
-        description = "Successful Operation",
-      ),
-      ApiResponse(
-        responseCode = "404",
-        description = "Not found",
-        content = [Content(mediaType = MediaType.APPLICATION_JSON_VALUE)],
-      ),
-      ApiResponse(
-        responseCode = "401",
-        description = "Unauthorized to access this endpoint",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
-      ),
-      ApiResponse(
-        responseCode = "403",
-        description = "Forbidden, requires an appropriate role",
-        content = [
-          Content(
-            mediaType = "application/json",
-            schema = Schema(implementation = ErrorResponse::class),
-          ),
-        ],
-      ),
-      ApiResponse(
-        responseCode = "400",
-        description = "Incorrect input options provided",
-        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
-      ),
-    ],
-  )
-  fun getUserById(
-    @Schema(example = "123", required = true)
-    @PathVariable("id")
-    @Parameter(required = true)
-    id: Int,
-  ) = userService.getUserById(id)
-  */
-
 }

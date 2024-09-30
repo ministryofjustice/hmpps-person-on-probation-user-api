@@ -51,10 +51,11 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
     val delegatedAccessEntity = delegatedAccessRepository.findByIdAndDeletedDateIsNull(id.toLong()) ?: throw ResourceNotFoundException("Given Id $id not found in the database or access already removed!")
     val delegatedAccessPermissionList = delegatedAccessEntity.id?.let {
       delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(
-        it.toLong())
+        it.toLong(),
+      )
     }
     if (!delegatedAccessPermissionList.isNullOrEmpty()) {
-        throw ValidationException("Revoke all permissions granted, before removing the access id $id")
+      throw ValidationException("Revoke all permissions granted, before removing the access id $id")
     }
     delegatedAccessEntity.deletedDate = now
     return delegatedAccessRepository.save(delegatedAccessEntity)
