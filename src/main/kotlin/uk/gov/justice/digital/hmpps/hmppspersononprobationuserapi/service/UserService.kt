@@ -10,6 +10,7 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.UserPost
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.UserEntity
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.repository.UserRepository
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 class UserService(private val userRepository: UserRepository) {
@@ -87,6 +88,12 @@ class UserService(private val userRepository: UserRepository) {
   fun getUserByUrn(urn: String): UserEntity? {
     val user = userRepository.findByOneLoginUrn(urn)
       ?: throw ResourceNotFoundException("User with One Login URN $urn not found in database")
+    return user
+  }
+
+  @Transactional
+  fun getUserById(id: Int): Optional<UserEntity> {
+    val user = userRepository.findById(id.toLong()) ?: throw ResourceNotFoundException("User with ID  $id not found in database")
     return user
   }
 }
