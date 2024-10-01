@@ -20,30 +20,25 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
   fun createDelegatedAccess(delegatePost: DelegatedAccess): DelegatedAccessEntity {
     val now = LocalDateTime.now()
 
-    val initiatedUserExists = userRepository.existsById(delegatePost.initiatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.initiatedUserId} not found in database ")
-    val delegatedUserExists = userRepository.existsById(delegatePost.delegatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.delegatedUserId} not found in database ")
+    val initiatedUser = userRepository.findById(delegatePost.initiatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.initiatedUserId} not found in database ")
+    val delegatedUser = userRepository.findById(delegatePost.delegatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.delegatedUserId} not found in database ")
 
-    if (initiatedUserExists && delegatedUserExists) {
-      val delegatedAccessAlreadyExists = delegatedAccessRepository.findByInitiatedUserIdAndDelegatedUserIdAndDeletedDateIsNull(delegatePost.initiatedUserId.toLong(), delegatePost.delegatedUserId.toLong())
-      if (delegatedAccessAlreadyExists != null) {
-        throw DuplicateDataFoundException("Delegated Access already exists and active!")
-      }
-      val delegatedAccessEntity = DelegatedAccessEntity(
-        id = null,
-        initiatedUserId = delegatePost.initiatedUserId,
-        delegatedUserId = delegatePost.delegatedUserId,
-        createdDate = now,
-        deletedDate = null,
+    val delegatedAccessAlreadyExists =
+      delegatedAccessRepository.findByInitiatedUserIdAndDelegatedUserIdAndDeletedDateIsNull(
+        initiatedUser.get().id!!.toLong(),
+        delegatedUser.get().id!!.toLong(),
       )
-      return delegatedAccessRepository.save(delegatedAccessEntity)
-    } else {
-      throw ValidationException(
-        "Request invalid. " +
-          "initiatedUserId= ${delegatePost.initiatedUserId} " +
-          "delegatedUserId= ${delegatePost.delegatedUserId} ",
-
-      )
+    if (delegatedAccessAlreadyExists != null) {
+      throw DuplicateDataFoundException("Delegated Access already exists and active!")
     }
+    val delegatedAccessEntity = DelegatedAccessEntity(
+      id = null,
+      initiatedUserId = initiatedUser.get().id!!.toInt(),
+      delegatedUserId = delegatedUser.get().id!!.toInt(),
+      createdDate = now,
+      deletedDate = null,
+    )
+    return delegatedAccessRepository.save(delegatedAccessEntity)
   }
 
   @Transactional
