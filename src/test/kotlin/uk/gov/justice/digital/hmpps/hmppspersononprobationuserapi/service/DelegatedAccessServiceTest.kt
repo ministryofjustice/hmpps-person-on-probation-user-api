@@ -72,7 +72,7 @@ class DelegatedAccessServiceTest {
     every { LocalDateTime.now() } returns fakeNow
     Mockito.`when`(userRepository.existsById(1)).thenReturn(true)
     Mockito.`when`(userRepository.existsById(2)).thenReturn(true)
-    val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    val delegatedAccessEntity = DelegatedAccessEntity(null, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
     val delegatedAccessPost = DelegatedAccess(
       initiatedUserId = 1,
       delegatedUserId = 2,
@@ -80,6 +80,7 @@ class DelegatedAccessServiceTest {
     Mockito.`when`(delegatedAccessRepository.findByInitiatedUserIdAndDelegatedUserIdAndDeletedDateIsNull(any(), any())).thenReturn(null)
     Mockito.`when`(delegatedAccessRepository.save(any())).thenReturn(delegatedAccessEntity)
     val result = delegatedAccessService.createDelegatedAccess(delegatedAccessPost)
+    Mockito.verify(delegatedAccessRepository).save(delegatedAccessEntity)
     Assertions.assertEquals(delegatedAccessEntity, result)
     unmockkStatic(LocalDateTime::class)
   }
@@ -89,13 +90,13 @@ class DelegatedAccessServiceTest {
     mockkStatic(LocalDateTime::class)
     every { LocalDateTime.now() } returns fakeNow
     val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
-    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(1, 1, 1, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(null, 1, 1, LocalDateTime.parse("2024-02-12T14:33:26"), null)
 
     Mockito.`when`(delegatedAccessRepository.findById(1)).thenReturn(Optional.of(delegatedAccessEntity))
     Mockito.`when`(delegatedAccessPermissionRepository.findByDelegatedAccessIdAndPermissionIdAndGrantedIsNotNullAndRevokedIsNull(1, 1)).thenReturn(null)
     Mockito.`when`(delegatedAccessPermissionRepository.save(any())).thenReturn(delegatedAccessPermissionEntity)
     val result = delegatedAccessService.grantDelegatedAccessPermission(1, 1)
-//    Mockito.verify(delegatedAccessPermissionRepository).save(delegatedAccessPermissionEntity)
+    Mockito.verify(delegatedAccessPermissionRepository).save(delegatedAccessPermissionEntity)
     Assertions.assertEquals(delegatedAccessPermissionEntity, result)
     unmockkStatic(LocalDateTime::class)
   }

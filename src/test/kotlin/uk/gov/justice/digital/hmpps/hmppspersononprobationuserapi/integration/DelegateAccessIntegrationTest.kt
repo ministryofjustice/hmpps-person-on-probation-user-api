@@ -94,7 +94,6 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
       .expectBody()
       .json(expectedOutput4)
 
-    // expectedOutput5.replace("null", "2024-09-30T10:04:52.814839")
     webTestClient.delete()
       .uri("/person-on-probation-user/revoke/permission/$userid")
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -104,7 +103,6 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
       .expectBody()
       .json(expectedOutput5)
 
-    // expectedOutput6.replace("null", "2024-09-30T10:04:52.814839")
     webTestClient.delete()
       .uri("/person-on-probation-user/remove/access/$userid")
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
