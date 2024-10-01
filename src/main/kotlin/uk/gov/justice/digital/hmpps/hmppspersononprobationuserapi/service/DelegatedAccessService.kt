@@ -116,7 +116,7 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
   fun getActiveAccessPermissionByInitiatorUserId(userId: Int): MutableList<DelegatedAccessPermissionEntity?> {
     val accessPermissionList = mutableListOf<DelegatedAccessPermissionEntity?>()
     getActiveAccessByInitiatorUserId(userId).forEach {
-      val list = it.id?.let { it1 -> delegatedAccessPermissionRepository.findByDelegatedAccessId(it1) }
+      val list = it.id?.let { it1 -> delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(it1) }
       if (list != null) {
         accessPermissionList.addAll(list)
       }

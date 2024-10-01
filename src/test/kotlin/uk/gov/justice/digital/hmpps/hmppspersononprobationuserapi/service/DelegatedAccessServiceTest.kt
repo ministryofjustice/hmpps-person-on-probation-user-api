@@ -180,4 +180,27 @@ class DelegatedAccessServiceTest {
     assertThrows<ResourceNotFoundException> { delegatedAccessService.revokeDelegatedAccessPermission(1, 1) }
     unmockkStatic(LocalDateTime::class)
   }
+
+  @Test
+  fun `test get active delegate access permission after revoked - returns 0 delegate active access permission `() {
+    mockkStatic(LocalDateTime::class)
+    every { LocalDateTime.now() } returns fakeNow
+    val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    val list = mutableListOf<DelegatedAccessEntity>()
+    list.addFirst(delegatedAccessEntity)
+    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(1, 1, 1, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    Mockito.`when`(delegatedAccessPermissionRepository.findByDelegatedAccessIdAndPermissionIdAndGrantedIsNotNullAndRevokedIsNull(any(), any())).thenReturn(delegatedAccessPermissionEntity)
+    delegatedAccessPermissionEntity.revoked = LocalDateTime.parse("2024-02-14T14:33:26")
+    Mockito.`when`(delegatedAccessPermissionRepository.save(any())).thenReturn(delegatedAccessPermissionEntity)
+    val result = delegatedAccessService.revokeDelegatedAccessPermission(delegatedAccessPermissionEntity.delegatedAccessId, 1)
+    Assertions.assertNotNull(result.revoked)
+
+    Mockito.`when`(delegatedAccessRepository.findByInitiatedUserIdAndDeletedDateIsNull(1)).thenReturn(list)
+    Mockito.`when`(delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(1)).thenReturn(
+      mutableListOf(),
+    )
+    val resultList = delegatedAccessService.getActiveAccessPermissionByInitiatorUserId(1)
+    Assertions.assertEquals(0, resultList.size)
+    unmockkStatic(LocalDateTime::class)
+  }
 }
