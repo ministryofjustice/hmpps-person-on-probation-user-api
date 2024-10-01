@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config.ErrorResponse
-import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.DelegatedAccessPost
+import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.DelegatedAccess
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.DelegatedAccessEntity
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.DelegatedAccessPermissionEntity
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.service.DelegatedAccessService
@@ -65,7 +65,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
   )
   fun createDelegatedAccess(
     @RequestBody
-    delegatedAccessPost: DelegatedAccessPost,
+    delegatedAccessPost: DelegatedAccess,
   ) = delegatedService.createDelegatedAccess(delegatedAccessPost)
 
   @DeleteMapping("/remove/access/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])

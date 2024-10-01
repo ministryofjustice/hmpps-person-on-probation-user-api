@@ -3,8 +3,9 @@ package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.service
 import jakarta.transaction.Transactional
 import jakarta.validation.ValidationException
 import org.springframework.stereotype.Service
+import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config.DuplicateDataFoundException
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config.ResourceNotFoundException
-import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.DelegatedAccessPost
+import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.DelegatedAccess
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.DelegatedAccessEntity
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.DelegatedAccessPermissionEntity
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.repository.DelegatedAccessPermissionRepository
@@ -16,16 +17,16 @@ import java.time.LocalDateTime
 class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAccessRepository, private val userRepository: UserRepository, private val delegatedAccessPermissionRepository: DelegatedAccessPermissionRepository) {
 
   @Transactional
-  fun createDelegatedAccess(delegatePost: DelegatedAccessPost): DelegatedAccessEntity {
+  fun createDelegatedAccess(delegatePost: DelegatedAccess): DelegatedAccessEntity {
     val now = LocalDateTime.now()
 
-    val initiatedUserExists = userRepository.findById(delegatePost.initiatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.initiatedUserId} not found in database ")
-    val delegatedUserExists = userRepository.findById(delegatePost.delegatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.delegatedUserId} not found in database ")
+    val initiatedUserExists = userRepository.existsById(delegatePost.initiatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.initiatedUserId} not found in database ")
+    val delegatedUserExists = userRepository.existsById(delegatePost.delegatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.delegatedUserId} not found in database ")
 
-    if (initiatedUserExists.isPresent && delegatedUserExists.isPresent) {
+    if (initiatedUserExists && delegatedUserExists) {
       val delegatedAccessAlreadyExists = delegatedAccessRepository.findByInitiatedUserIdAndDelegatedUserIdAndDeletedDateIsNull(delegatePost.initiatedUserId.toLong(), delegatePost.delegatedUserId.toLong())
       if (delegatedAccessAlreadyExists != null) {
-        throw ValidationException("Delegated Access already exists and active!")
+        throw DuplicateDataFoundException("Delegated Access already exists and active!")
       }
       val delegatedAccessEntity = DelegatedAccessEntity(
         id = null,
@@ -39,7 +40,7 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
       throw ValidationException(
         "Request invalid. " +
           "initiatedUserId= ${delegatePost.initiatedUserId} " +
-          "delegatedUserId=${delegatePost.delegatedUserId} ",
+          "delegatedUserId= ${delegatePost.delegatedUserId} ",
 
       )
     }
@@ -76,28 +77,19 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
   @Transactional
   fun grantDelegatedAccessPermission(accessId: Int, permissionId: Int): DelegatedAccessPermissionEntity {
     val now = LocalDateTime.now()
-
     val delegatedAccess = delegatedAccessRepository.findById(accessId.toLong()) ?: throw ResourceNotFoundException("User with id $accessId not found in database ")
-
-    if (delegatedAccess.isPresent) {
-      val delegatedAccessPermissionAlreadyExists = delegatedAccessPermissionRepository.findByDelegatedAccessIdAndPermissionIdAndGrantedIsNotNullAndRevokedIsNull(accessId.toLong(), permissionId.toLong())
-      if (delegatedAccessPermissionAlreadyExists != null) {
-        throw ValidationException("Permission already granted and active!")
-      }
-      val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(
-        id = null,
-        delegatedAccessId = accessId,
-        permissionId = permissionId,
-        granted = now,
-        revoked = null,
-      )
-      return delegatedAccessPermissionRepository.save(delegatedAccessPermissionEntity)
-    } else {
-      throw ValidationException(
-        "Request invalid. " +
-          "accessId= $accessId",
-      )
+    val delegatedAccessPermissionAlreadyExists = delegatedAccessPermissionRepository.findByDelegatedAccessIdAndPermissionIdAndGrantedIsNotNullAndRevokedIsNull(accessId.toLong(), permissionId.toLong())
+    if (delegatedAccessPermissionAlreadyExists != null) {
+      throw DuplicateDataFoundException("Permission already granted and active!")
     }
+    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(
+      id = null,
+      delegatedAccessId = accessId,
+      permissionId = permissionId,
+      granted = now,
+      revoked = null,
+    )
+    return delegatedAccessPermissionRepository.save(delegatedAccessPermissionEntity)
   }
 
   @Transactional
