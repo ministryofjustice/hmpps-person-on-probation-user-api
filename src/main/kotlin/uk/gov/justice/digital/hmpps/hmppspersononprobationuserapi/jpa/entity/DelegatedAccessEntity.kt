@@ -16,10 +16,10 @@ data class DelegatedAccessEntity(
   val id: Long?,
 
   @Column(name = "initiated_user_id")
-  var initiatedUserId: Int,
+  var initiatedUserId: Long,
 
   @Column(name = "delegated_user_id")
-  var delegatedUserId: Int,
+  var delegatedUserId: Long,
 
   @Column(name = "when_created")
   val createdDate: LocalDateTime,
