@@ -204,4 +204,56 @@ class DelegatedAccessServiceTest {
     Assertions.assertEquals(0, resultList.size)
     unmockkStatic(LocalDateTime::class)
   }
+
+  @Test
+  fun `test getAllAccessByDelegatedUserId - returns list of all Access exists`() {
+    val userEntity1 = UserEntity(2, "null", "null", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "null", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
+    val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
+    val delegatedAccessList = emptyList<DelegatedAccessEntity>().toMutableList()
+    delegatedAccessList.add(delegatedAccessEntity)
+    Mockito.`when`(userEntity1.id?.let { delegatedAccessRepository.findByDelegatedUserId(it) }).thenReturn(delegatedAccessList)
+    val result = delegatedAccessService.getAllAccessByDelegatedUserId(2)
+    Assertions.assertEquals(delegatedAccessList, result)
+  }
+
+  @Test
+  fun `test getActiveAccessByDelegatedUserId - returns list of active Access exists`() {
+    val userEntity1 = UserEntity(2, "null", "null", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "null", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
+    val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    val delegatedAccessList = emptyList<DelegatedAccessEntity>().toMutableList()
+    delegatedAccessList.add(delegatedAccessEntity)
+    Mockito.lenient().`when`(userEntity1.id?.let { delegatedAccessRepository.findByDelegatedUserIdAndDeletedDateIsNull(it) }).thenReturn(delegatedAccessList)
+    val result = delegatedAccessService.getActiveAccessByDelegatedUserId(2)
+    Assertions.assertEquals(delegatedAccessList, result)
+  }
+
+  @Test
+  fun `test getAllAccessPermissionByDelegatedUserId - returns list of all Access exists`() {
+    val userEntity1 = UserEntity(2, "null", "null", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "null", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
+    val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
+    val delegatedAccessList = emptyList<DelegatedAccessEntity>().toMutableList()
+    delegatedAccessList.add(delegatedAccessEntity)
+    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(1, 1, 1, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"))
+    val delegatedAccessPermissionList = emptyList<DelegatedAccessPermissionEntity>().toMutableList()
+    delegatedAccessPermissionList.add(delegatedAccessPermissionEntity)
+    Mockito.`when`(userEntity1.id?.let { delegatedAccessRepository.findByDelegatedUserId(it) }).thenReturn(delegatedAccessList)
+    Mockito.`when`(delegatedAccessPermissionRepository.findByDelegatedAccessId(1)).thenReturn(delegatedAccessPermissionList)
+    val result = delegatedAccessService.getAllAccessPermissionByDelegatedUserId(2)
+    Assertions.assertEquals(delegatedAccessPermissionList, result)
+  }
+
+  @Test
+  fun `test getActiveAccessPermissionByDelegatedUserId - returns list of active Access exists`() {
+    val userEntity1 = UserEntity(2, "null", "null", false, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "null", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
+    val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    val delegatedAccessList = emptyList<DelegatedAccessEntity>().toMutableList()
+    delegatedAccessList.add(delegatedAccessEntity)
+    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(1, 1, 1, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    val delegatedAccessPermissionList = emptyList<DelegatedAccessPermissionEntity>().toMutableList()
+    delegatedAccessPermissionList.add(delegatedAccessPermissionEntity)
+    Mockito.`when`(userEntity1.id?.let { delegatedAccessRepository.findByDelegatedUserIdAndDeletedDateIsNull(it) }).thenReturn(delegatedAccessList)
+    Mockito.`when`(delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(1)).thenReturn(delegatedAccessPermissionList)
+    val result = delegatedAccessService.getActiveAccessPermissionByDelegatedUserId(2)
+    Assertions.assertEquals(delegatedAccessPermissionList, result)
+  }
 }

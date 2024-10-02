@@ -15,4 +15,8 @@ interface DelegatedAccessRepository : JpaRepository<DelegatedAccessEntity, Long>
   fun findByInitiatedUserId(initiatedUserId: Long): List<DelegatedAccessEntity>
 
   fun findByInitiatedUserIdAndDeletedDateIsNull(initiatedUserId: Long): List<DelegatedAccessEntity>
+
+  fun findByDelegatedUserId(delegatedUserId: Long): List<DelegatedAccessEntity>
+
+  fun findByDelegatedUserIdAndDeletedDateIsNull(delegatedUserId: Long): List<DelegatedAccessEntity>
 }

@@ -43,16 +43,16 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
   }
 
   @Transactional
-  fun removeDelegatedAccess(id: Long): DelegatedAccessEntity {
+  fun removeDelegatedAccess(accessId: Long): DelegatedAccessEntity {
     val now = LocalDateTime.now()
-    val delegatedAccessEntity = delegatedAccessRepository.findByIdAndDeletedDateIsNull(id.toLong()) ?: throw ResourceNotFoundException("Given Id $id not found in the database or access already removed!")
+    val delegatedAccessEntity = delegatedAccessRepository.findByIdAndDeletedDateIsNull(accessId.toLong()) ?: throw ResourceNotFoundException("Given Id $accessId not found in the database or access already removed!")
     val delegatedAccessPermissionList = delegatedAccessEntity.id?.let {
       delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(
         it.toLong(),
       )
     }
     if (!delegatedAccessPermissionList.isNullOrEmpty()) {
-      throw ValidationException("Revoke all permissions granted, before removing the access id $id")
+      throw ValidationException("Revoke all permissions granted, before removing the access id $accessId")
     }
     delegatedAccessEntity.deletedDate = now
     return delegatedAccessRepository.save(delegatedAccessEntity)
@@ -112,6 +112,42 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
   fun getActiveAccessPermissionByInitiatorUserId(userId: Long): MutableList<DelegatedAccessPermissionEntity?> {
     val accessPermissionList = mutableListOf<DelegatedAccessPermissionEntity?>()
     getActiveAccessByInitiatorUserId(userId).forEach {
+      val list = it.id?.let { it1 -> delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(it1) }
+      if (list != null) {
+        accessPermissionList.addAll(list)
+      }
+    }
+    return accessPermissionList
+  }
+
+  @Transactional
+  fun getAllAccessByDelegatedUserId(id: Long): List<DelegatedAccessEntity> {
+    val accessList = delegatedAccessRepository.findByDelegatedUserId(id.toLong())
+    return accessList
+  }
+
+  @Transactional
+  fun getAllAccessPermissionByDelegatedUserId(userId: Long): MutableList<DelegatedAccessPermissionEntity?> {
+    val accessPermissionList = mutableListOf<DelegatedAccessPermissionEntity?>()
+    getAllAccessByDelegatedUserId(userId).forEach {
+      val list = it.id?.let { it1 -> delegatedAccessPermissionRepository.findByDelegatedAccessId(it1) }
+      if (list != null) {
+        accessPermissionList.addAll(list)
+      }
+    }
+    return accessPermissionList
+  }
+
+  @Transactional
+  fun getActiveAccessByDelegatedUserId(id: Long): List<DelegatedAccessEntity> {
+    val accessList = delegatedAccessRepository.findByDelegatedUserIdAndDeletedDateIsNull(id)
+    return accessList
+  }
+
+  @Transactional
+  fun getActiveAccessPermissionByDelegatedUserId(userId: Long): MutableList<DelegatedAccessPermissionEntity?> {
+    val accessPermissionList = mutableListOf<DelegatedAccessPermissionEntity?>()
+    getActiveAccessByDelegatedUserId(userId).forEach {
       val list = it.id?.let { it1 -> delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(it1) }
       if (list != null) {
         accessPermissionList.addAll(list)
