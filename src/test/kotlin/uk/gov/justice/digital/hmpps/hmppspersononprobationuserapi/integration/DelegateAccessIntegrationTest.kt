@@ -52,18 +52,7 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
     val expectedOutput6 = readFile("testdata/expectation/deleteAccess.json")
 
     val userid = 1
-
-    webTestClient.get()
-      .uri("/person-on-probation-user/abc/user/1")
-      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
-      .exchange()
-      .expectStatus().isOk
-
-    webTestClient.get()
-      .uri("/person-on-probation-user/NA/user/2")
-      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
-      .exchange()
-      .expectStatus().isOk
+    val delegatedUserId = 2
 
     webTestClient.post()
       .uri("/person-on-probation-user/delegate/access")
@@ -98,7 +87,39 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
       .json(expectedOutput3)
 
     webTestClient.get()
+      .uri("/person-on-probation-user/all/access/delegated/$delegatedUserId")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody()
+      .json(expectedOutput3)
+
+    webTestClient.get()
       .uri("/person-on-probation-user/all/permission/$userid")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody()
+      .json(expectedOutput4)
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/all/permission/delegated/$delegatedUserId")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody()
+      .json(expectedOutput4)
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/active/permission/$userid")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody()
+      .json(expectedOutput4)
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/active/permission/delegated/$delegatedUserId")
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
       .exchange()
       .expectStatus().isOk

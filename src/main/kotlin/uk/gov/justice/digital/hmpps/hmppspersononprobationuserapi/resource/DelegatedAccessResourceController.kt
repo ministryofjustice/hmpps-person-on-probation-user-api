@@ -29,7 +29,7 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.service.Delega
 class DelegatedAccessResourceController(private val delegatedService: DelegatedAccessService) {
 
   @PostMapping("/delegate/access", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Delegate Access to a Person for Probation User", description = "Create access to a  delegated person for probation User")
+  @Operation(summary = "Delegate Access to a Person for Probation User", description = "Create access to a  delegated person for a probation User")
   @ApiResponses(
     value = [
       ApiResponse(
@@ -68,8 +68,8 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     delegatedAccessPost: DelegatedAccess,
   ) = delegatedService.createDelegatedAccess(delegatedAccessPost)
 
-  @DeleteMapping("/remove/access/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Revoke Delegate Access for Probation User", description = "Revoke delegate access for probation user")
+  @DeleteMapping("/remove/access/{accessId}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @Operation(summary = "Revoke Delegate Access for a Probation User", description = "Revoke delegate access for a probation user")
   @ApiResponses(
     value = [
       ApiResponse(
@@ -104,15 +104,15 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     ],
   )
   fun removeDelegatedAccess(
-    @PathVariable("id")
+    @PathVariable("accessId")
     @Parameter(required = true)
-    id: Long,
+    accessId: Long,
   ): DelegatedAccessEntity? {
-    return delegatedService.removeDelegatedAccess(id)
+    return delegatedService.removeDelegatedAccess(accessId)
   }
 
   @GetMapping("/all/access/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Get all delegated access list by person on probation user id", description = "Person on Probation User Delegated access")
+  @Operation(summary = "Get all delegated access list by person on probation user id", description = "Person on Probation User All Delegated access")
   @ApiResponses(
     value = [
       ApiResponse(
@@ -154,7 +154,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
   ) = delegatedService.getAllAccessByInitiatorUserId(userid)
 
   @GetMapping("/active/access/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Get all delegated access list by person on probation user id", description = "Person on Probation User Delegated access")
+  @Operation(summary = "Get active delegated access list by person on probation user id", description = "Person on Probation User Active Delegated access")
   @ApiResponses(
     value = [
       ApiResponse(
@@ -324,7 +324,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
   ) = delegatedService.getAllAccessPermissionByUserId(userid)
 
   @GetMapping("/active/permission/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
-  @Operation(summary = "Get all delegated permission list by person on probation user id", description = "Person on Probation User Delegated Permissions")
+  @Operation(summary = "Get delegated active permission list by person on probation user id", description = "Person on Probation User Delegated Active Permissions")
   @ApiResponses(
     value = [
       ApiResponse(
@@ -364,4 +364,172 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Parameter(required = true)
     userid: Long,
   ) = delegatedService.getActiveAccessPermissionByInitiatorUserId(userid)
+
+  @GetMapping("/all/access/delegated/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @Operation(summary = "Get all delegated access list by non-probation user id", description = "All delegated access list by non-probation user id")
+  @ApiResponses(
+    value = [
+      ApiResponse(
+        responseCode = "200",
+        description = "Successful Operation",
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "Not found",
+        content = [Content(mediaType = MediaType.APPLICATION_JSON_VALUE)],
+      ),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized to access this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden, requires an appropriate role",
+        content = [
+          Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ErrorResponse::class),
+          ),
+        ],
+      ),
+      ApiResponse(
+        responseCode = "400",
+        description = "Incorrect input options provided",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getDelegatedAccessListByDelegatedUserId(
+    @Schema(example = "123", required = true)
+    @PathVariable("userid")
+    @Parameter(required = true)
+    userid: Long,
+  ) = delegatedService.getAllAccessByDelegatedUserId(userid)
+
+  @GetMapping("/active/access/delegated/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @Operation(summary = "Get active delegated access list by non-probation user id", description = "Active delegated access list by non-probation user id")
+  @ApiResponses(
+    value = [
+      ApiResponse(
+        responseCode = "200",
+        description = "Successful Operation",
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "Not found",
+        content = [Content(mediaType = MediaType.APPLICATION_JSON_VALUE)],
+      ),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized to access this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden, requires an appropriate role",
+        content = [
+          Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ErrorResponse::class),
+          ),
+        ],
+      ),
+      ApiResponse(
+        responseCode = "400",
+        description = "Incorrect input options provided",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getActiveDelegatedAccessListByDelegatedUserId(
+    @Schema(example = "123", required = true)
+    @PathVariable("userid")
+    @Parameter(required = true)
+    userid: Long,
+  ) = delegatedService.getActiveAccessByDelegatedUserId(userid)
+
+  @GetMapping("/all/permission/delegated/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @Operation(summary = "Get all delegated permission list by non-probation user id", description = "All delegated permission list by non-probation user id")
+  @ApiResponses(
+    value = [
+      ApiResponse(
+        responseCode = "200",
+        description = "Successful Operation",
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "Not found",
+        content = [Content(mediaType = MediaType.APPLICATION_JSON_VALUE)],
+      ),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized to access this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden, requires an appropriate role",
+        content = [
+          Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ErrorResponse::class),
+          ),
+        ],
+      ),
+      ApiResponse(
+        responseCode = "400",
+        description = "Incorrect input options provided",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getDelegatedPermissionListByDelegatedUserId(
+    @Schema(example = "123", required = true)
+    @PathVariable("userid")
+    @Parameter(required = true)
+    userid: Long,
+  ) = delegatedService.getAllAccessPermissionByDelegatedUserId(userid)
+
+  @GetMapping("/active/permission/delegated/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @Operation(summary = "Get all delegated permission list by non-probation user id", description = "All delegated permission list by non-probation user id")
+  @ApiResponses(
+    value = [
+      ApiResponse(
+        responseCode = "200",
+        description = "Successful Operation",
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "Not found",
+        content = [Content(mediaType = MediaType.APPLICATION_JSON_VALUE)],
+      ),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized to access this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden, requires an appropriate role",
+        content = [
+          Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ErrorResponse::class),
+          ),
+        ],
+      ),
+      ApiResponse(
+        responseCode = "400",
+        description = "Incorrect input options provided",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getActiveDelegatedPermissionListByDelegatedUserId(
+    @Schema(example = "123", required = true)
+    @PathVariable("userid")
+    @Parameter(required = true)
+    userid: Long,
+  ) = delegatedService.getActiveAccessPermissionByDelegatedUserId(userid)
 }

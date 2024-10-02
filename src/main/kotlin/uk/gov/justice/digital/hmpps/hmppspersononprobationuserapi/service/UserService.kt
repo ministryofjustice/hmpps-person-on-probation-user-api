@@ -35,31 +35,49 @@ class UserService(private val userRepository: UserRepository) {
   fun createUser(userPost: UserPost): UserEntity {
     val now = LocalDateTime.now()
 
-    if (userPost.crn != null && userPost.cprId != null && userPost.verified != null &&
-      userPost.nomsId != null && userPost.oneLoginUrn != null
-
+    if ((
+        userPost.verified == true && userPost.crn != null && userPost.cprId != null && userPost.verified != null &&
+          userPost.nomsId != null && userPost.oneLoginUrn != null
+        ) || (userPost.verified == false && userPost.oneLoginUrn != null)
     ) {
       val userExistsWithURN = userRepository.findByOneLoginUrn(userPost.oneLoginUrn!!)
       if (userExistsWithURN != null) {
         throw DuplicateDataFoundException("User with One Login URN  ${userPost.oneLoginUrn} already exists in the  database")
       }
-
-      val userEntity = UserEntity(
-        id = null,
-        crn = userPost.crn!!,
-        cprId = userPost.cprId!!,
-        verified = userPost.verified,
-        creationDate = now,
-        modifiedDate = now,
-        nomsId = userPost.nomsId!!,
-        oneLoginUrn = userPost.oneLoginUrn!!,
-      )
-      return userRepository.save(userEntity)
+      val userEntity: UserEntity
+      if (userPost.verified == true) {
+        userEntity = UserEntity(
+          id = null,
+          crn = userPost.crn!!,
+          cprId = userPost.cprId!!,
+          verified = userPost.verified,
+          creationDate = now,
+          modifiedDate = now,
+          nomsId = userPost.nomsId!!,
+          oneLoginUrn = userPost.oneLoginUrn!!,
+        )
+        return userRepository.save(userEntity)
+      } else {
+        userEntity = UserEntity(
+          id = null,
+          crn = null.toString(),
+          cprId = null.toString(),
+          verified = userPost.verified,
+          creationDate = now,
+          modifiedDate = now,
+          nomsId = null.toString(),
+          oneLoginUrn = userPost.oneLoginUrn!!,
+        )
+        return userRepository.save(userEntity)
+      }
     }
     throw ValidationException(
       "Request invalid. " +
+        "crn= ${userPost.crn} " +
         "cprId= ${userPost.cprId} " +
-        "verified=${userPost.verified} ",
+        "nomsId= ${userPost.nomsId} " +
+        "verified=${userPost.verified} " +
+        "oneLoginUrn=${userPost.oneLoginUrn} ",
 
     )
   }
