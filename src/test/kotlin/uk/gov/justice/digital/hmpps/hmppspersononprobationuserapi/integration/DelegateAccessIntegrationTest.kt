@@ -11,7 +11,7 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
   private val fakeNow = LocalDateTime.parse("2024-09-30T09:04:52.814839")
 
   @Test
-  @Sql("classpath:testdata/sql/clear-all-data.sql")
+  @Sql("classpath:testdata/sql/seed-2-user.sql")
   fun `Get All Delegate Access - happy path Empty List`() {
     val expectedOutput = "[]"
     val userid = 1
@@ -40,7 +40,6 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
   }
 
   @Test
-  @Sql("classpath:testdata/sql/seed-2-user.sql")
   fun `Post Access & Permission, Get Access & Permission, Delete Access & Permission - happy path`() {
     mockkStatic(LocalDateTime::class)
     every { LocalDateTime.now() } returns fakeNow
@@ -54,12 +53,24 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
 
     val userid = 1
 
+    webTestClient.get()
+      .uri("/person-on-probation-user/abc/user/1")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/NA/user/2")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+
     webTestClient.post()
       .uri("/person-on-probation-user/delegate/access")
       .bodyValue(
         mapOf(
-          "initiatedUserId" to "1",
-          "delegatedUserId" to "2",
+          "initiatedUserId" to 1,
+          "delegatedUserId" to 2,
         ),
       )
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -111,5 +122,37 @@ class DelegateAccessIntegrationTest : IntegrationTestBase() {
       .expectHeader().contentType("application/json")
       .expectBody()
       .json(expectedOutput6)
+  }
+
+  @Test
+  @Sql("classpath:testdata/sql/seed-2-user.sql")
+  fun `Gives 404 if initiatedUser does not exist`() {
+    webTestClient.post()
+      .uri("/person-on-probation-user/delegate/access")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .bodyValue(
+        mapOf(
+          "initiatedUserId" to "43234",
+          "delegatedUserId" to "2",
+        ),
+      )
+      .exchange()
+      .expectStatus().isNotFound
+  }
+
+  @Test
+  @Sql("classpath:testdata/sql/seed-2-user.sql")
+  fun `Gives 404 if delegatedUser does not exist`() {
+    webTestClient.post()
+      .uri("/person-on-probation-user/delegate/access")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .bodyValue(
+        mapOf(
+          "initiatedUserId" to "1",
+          "delegatedUserId" to "243455",
+        ),
+      )
+      .exchange()
+      .expectStatus().isNotFound
   }
 }

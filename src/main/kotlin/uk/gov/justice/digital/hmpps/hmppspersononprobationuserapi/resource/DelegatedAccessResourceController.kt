@@ -106,7 +106,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
   fun removeDelegatedAccess(
     @PathVariable("id")
     @Parameter(required = true)
-    id: Int,
+    id: Long,
   ): DelegatedAccessEntity? {
     return delegatedService.removeDelegatedAccess(id)
   }
@@ -150,7 +150,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Schema(example = "123", required = true)
     @PathVariable("userid")
     @Parameter(required = true)
-    userid: Int,
+    userid: Long,
   ) = delegatedService.getAllAccessByInitiatorUserId(userid)
 
   @GetMapping("/active/access/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -192,7 +192,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Schema(example = "123", required = true)
     @PathVariable("userid")
     @Parameter(required = true)
-    userid: Int,
+    userid: Long,
   ) = delegatedService.getActiveAccessByInitiatorUserId(userid)
 
   @PostMapping("/grant/permission/{accessId}", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -234,7 +234,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Schema(example = "123", required = true)
     @PathVariable("accessId")
     @Parameter(required = true)
-    accessId: Int,
+    accessId: Long,
   ) = delegatedService.grantDelegatedAccessPermission(accessId, 1)
 
   @DeleteMapping("/revoke/permission/{accessId}", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -276,7 +276,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Schema(example = "123", required = true)
     @PathVariable("accessId")
     @Parameter(required = true)
-    accessId: Int,
+    accessId: Long,
   ): DelegatedAccessPermissionEntity? {
     return delegatedService.revokeDelegatedAccessPermission(accessId, 1)
   }
@@ -320,7 +320,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Schema(example = "123", required = true)
     @PathVariable("userid")
     @Parameter(required = true)
-    userid: Int,
+    userid: Long,
   ) = delegatedService.getAllAccessPermissionByUserId(userid)
 
   @GetMapping("/active/permission/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -362,6 +362,6 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Schema(example = "123", required = true)
     @PathVariable("userid")
     @Parameter(required = true)
-    userid: Int,
+    userid: Long,
   ) = delegatedService.getActiveAccessPermissionByInitiatorUserId(userid)
 }

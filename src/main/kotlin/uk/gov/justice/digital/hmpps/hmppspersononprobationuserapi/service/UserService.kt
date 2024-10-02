@@ -90,10 +90,4 @@ class UserService(private val userRepository: UserRepository) {
       ?: throw ResourceNotFoundException("User with One Login URN $urn not found in database")
     return user
   }
-
-  @Transactional
-  fun getUserById(id: Int): Optional<UserEntity> {
-    val user = userRepository.findById(id.toLong()) ?: throw ResourceNotFoundException("User with ID  $id not found in database")
-    return user
-  }
 }
