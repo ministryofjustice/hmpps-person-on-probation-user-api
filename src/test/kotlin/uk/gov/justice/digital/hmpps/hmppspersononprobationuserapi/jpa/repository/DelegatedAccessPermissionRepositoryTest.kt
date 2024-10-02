@@ -55,9 +55,21 @@ class DelegatedAccessPermissionRepositoryTest : TestBase() {
     userRepository.save(userEntity1)
     val userEntity2 = UserEntity(null, "NA", "NA", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "NA", "crn2")
     userRepository.save(userEntity2)
-    val delegatedAccessEntity = DelegatedAccessEntity(null, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
-    delegatedAccessRepository.save(delegatedAccessEntity)
-    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(1, 1, 1, LocalDateTime.parse("2024-02-12T14:33:26"), null)
+    val delegatedAccessEntity = userEntity1.id?.let {
+      userEntity2.id?.let { it1 ->
+        DelegatedAccessEntity(
+          null,
+          it,
+          it1,
+          LocalDateTime.parse("2024-02-12T14:33:26"),
+          null,
+        )
+      }
+    }
+    if (delegatedAccessEntity != null) {
+      delegatedAccessRepository.save(delegatedAccessEntity)
+    }
+    val delegatedAccessPermissionEntity = DelegatedAccessPermissionEntity(null, 1, 1, LocalDateTime.parse("2024-02-12T14:33:26"), null)
     delegatedAccessPermissionRepository.save(delegatedAccessPermissionEntity)
 
     val assessmentFromDatabase = delegatedAccessPermissionRepository.findAll()[0]

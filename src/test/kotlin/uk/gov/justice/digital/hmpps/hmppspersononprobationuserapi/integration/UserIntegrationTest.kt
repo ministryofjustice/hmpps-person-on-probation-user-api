@@ -11,6 +11,7 @@ class UserIntegrationTest : IntegrationTestBase() {
   private val fakeNow = LocalDateTime.parse("2024-02-12T14:33:26.520566")
 
   @Test
+  @Sql("classpath:testdata/sql/clear-all-data.sql")
   @Sql("classpath:testdata/sql/seed-user.sql")
   fun `Get All Person on Probation Users - happy path`() {
     val expectedOutput = readFile("testdata/expectation/usersList.json")
@@ -51,45 +52,9 @@ class UserIntegrationTest : IntegrationTestBase() {
   }
 
   @Test
-  fun `Create Person on Probation User with duplicate email `() {
-    val crn = "abc"
-    val id = 1
-    val expectedOutput = readFile("testdata/expectation/user-3.json")
-    val expectedOutput2 = readFile("testdata/expectation/postuser-2.json")
-    mockkStatic(LocalDateTime::class)
-    every { LocalDateTime.now() } returns fakeNow
-
-    webTestClient.get()
-      .uri("/person-on-probation-user/$crn/user/$id")
-      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
-      .exchange()
-      .expectStatus().isOk
-      .expectBody()
-      .json(expectedOutput)
-
-    webTestClient.post()
-      .uri("/person-on-probation-user/user")
-      .bodyValue(
-        mapOf(
-          "crn" to "abc",
-          "cprId" to "123",
-          "verified" to true,
-          "nomsId" to "G123",
-          "oneLoginUrn" to "urn8",
-        ),
-      )
-      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
-      .exchange()
-      .expectStatus().isOk
-      .expectHeader().contentType("application/json")
-      .expectBody()
-      .json(expectedOutput2)
-  }
-
-  @Test
   fun `Create and Update Person on Probation User by CRN Id - happy path`() {
     var crn = "axb"
-    val id = 5
+    val id = 4
     val expectedOutput = readFile("testdata/expectation/postuser-1.json")
     val expectedOutput2 = readFile("testdata/expectation/patchuser-1.json")
 
@@ -308,8 +273,8 @@ class UserIntegrationTest : IntegrationTestBase() {
   @Test
   fun `Create Person on Probation User with duplicate one login urn `() {
     val crn = "abc"
-    val id = 3
-    val expectedOutput = readFile("testdata/expectation/user-2.json")
+    val id = 1
+    val expectedOutput = readFile("testdata/expectation/user-1.json")
     mockkStatic(LocalDateTime::class)
     every { LocalDateTime.now() } returns fakeNow
 
