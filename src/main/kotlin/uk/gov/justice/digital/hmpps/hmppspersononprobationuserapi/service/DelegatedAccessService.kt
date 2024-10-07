@@ -2,7 +2,6 @@ package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.service
 
 import jakarta.transaction.Transactional
 import jakarta.validation.ValidationException
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config.DuplicateDataFoundException
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.config.ResourceNotFoundException
@@ -21,8 +20,8 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
   fun createDelegatedAccess(delegatePost: DelegatedAccess): DelegatedAccessEntity {
     val now = LocalDateTime.now()
 
-    val initiatedUser = userRepository.findByIdOrNull(delegatePost.initiatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.initiatedUserId} not found in database ")
-    val delegatedUser = userRepository.findByIdOrNull(delegatePost.delegatedUserId.toLong()) ?: throw ResourceNotFoundException("User with id ${delegatePost.delegatedUserId} not found in database ")
+    val initiatedUser = userRepository.findByIdAndVerified(delegatePost.initiatedUserId.toLong(), true) ?: throw ResourceNotFoundException("User with id ${delegatePost.initiatedUserId} is not a verified or not found in database")
+    val delegatedUser = userRepository.findByIdAndVerified(delegatePost.delegatedUserId.toLong(), false) ?: throw ResourceNotFoundException("User with id ${delegatePost.delegatedUserId} not found in database ")
 
     val delegatedAccessAlreadyExists =
       delegatedAccessRepository.findByInitiatedUserIdAndDelegatedUserIdAndDeletedDateIsNull(

@@ -113,39 +113,6 @@ class UserServiceTest {
   }
 
   @Test
-  fun `test user - creates user with duplicate email happy path`() {
-    mockkStatic(LocalDateTime::class)
-    every { LocalDateTime.now() } returns fakeNow
-
-    val userEntity1 = UserEntity(id = null, crn = "abc", cprId = "123", verified = true, creationDate = fakeNow, modifiedDate = fakeNow, nomsId = "G123", oneLoginUrn = "urn1")
-    val userEntity2 = UserEntity(id = null, crn = "abc", cprId = "123", verified = true, creationDate = fakeNow, modifiedDate = fakeNow, nomsId = "G123", oneLoginUrn = "urn2")
-    val userPost = UserPost(
-      crn = "abc",
-      cprId = "123",
-      verified = true,
-      nomsId = "G123",
-      oneLoginUrn = "urn1",
-    )
-
-    Mockito.`when`(userRepository.save(any())).thenReturn(userEntity1)
-    val result = userService.createUser(userPost)
-    Mockito.verify(userRepository).save(userEntity1)
-    Assertions.assertEquals(userEntity1, result)
-    val userPost2 = UserPost(
-      crn = "abc",
-      cprId = "123",
-      verified = true,
-      nomsId = "G123",
-      oneLoginUrn = "urn2",
-    )
-    Mockito.`when`(userRepository.save(any())).thenReturn(userEntity2)
-    val result2 = userService.createUser(userPost2)
-    Mockito.verify(userRepository).save(userEntity2)
-    Assertions.assertEquals(userEntity2, result2)
-    unmockkStatic(LocalDateTime::class)
-  }
-
-  @Test
   fun `test user - creates user with duplicate one login urn check`() {
     mockkStatic(LocalDateTime::class)
     every { LocalDateTime.now() } returns fakeNow

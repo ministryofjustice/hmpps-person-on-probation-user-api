@@ -72,8 +72,8 @@ class DelegatedAccessServiceTest {
     every { LocalDateTime.now() } returns fakeNow
     val userEntity1 = UserEntity(1, "abc", "123", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
     val userEntity2 = UserEntity(2, "NA", "NA", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
-    Mockito.`when`(userRepository.findById(1)).thenReturn(Optional.of(userEntity1))
-    Mockito.`when`(userRepository.findById(2)).thenReturn(Optional.of(userEntity2))
+    Mockito.`when`(userRepository.findByIdAndVerified(1, true)).thenReturn(userEntity1)
+    Mockito.`when`(userRepository.findByIdAndVerified(2, false)).thenReturn(userEntity2)
     val delegatedAccessEntity = DelegatedAccessEntity(null, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
     val delegatedAccessPost = DelegatedAccess(
       initiatedUserId = 1,
@@ -139,8 +139,8 @@ class DelegatedAccessServiceTest {
     every { LocalDateTime.now() } returns fakeNow
     val userEntity1 = UserEntity(1, "abc", "123", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
     val userEntity2 = UserEntity(2, "NA", "NA", true, LocalDateTime.parse("2024-02-12T14:33:26"), LocalDateTime.parse("2024-02-12T14:33:26"), "G123", "urn:fdc:gov.uk:2022:T5fYp6sYl3DdYNF0tDfZtF-c4ZKewWRLw8YGcy6oEj8")
-    Mockito.`when`(userRepository.findById(1)).thenReturn(Optional.of(userEntity1))
-    Mockito.`when`(userRepository.findById(2)).thenReturn(Optional.of(userEntity2))
+    Mockito.`when`(userRepository.findByIdAndVerified(1, true)).thenReturn(userEntity1)
+    Mockito.`when`(userRepository.findByIdAndVerified(2, false)).thenReturn(userEntity2)
     val delegatedAccessEntity = DelegatedAccessEntity(1, 1, 2, LocalDateTime.parse("2024-02-12T14:33:26"), null)
     val delegatedAccessPost = DelegatedAccess(
       initiatedUserId = 1,
