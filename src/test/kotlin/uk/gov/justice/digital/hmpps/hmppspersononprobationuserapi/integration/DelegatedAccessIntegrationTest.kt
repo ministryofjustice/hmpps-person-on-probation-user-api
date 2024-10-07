@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.test.context.jdbc.Sql
 import java.time.LocalDateTime
 
-class DelegateAccessIntegrationTest : IntegrationTestBase() {
+class DelegatedAccessIntegrationTest : IntegrationTestBase() {
 
   private val fakeNow = LocalDateTime.parse("2024-09-30T09:04:52.814839")
 
