@@ -19,7 +19,7 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.Use
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.repository.DelegatedUserOTPRepository
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.repository.UserRepository
 import java.time.LocalDateTime
-import java.util.*
+import java.util.Optional
 
 @ExtendWith(MockitoExtension::class)
 class DelegatedUserOTPServiceTest {
