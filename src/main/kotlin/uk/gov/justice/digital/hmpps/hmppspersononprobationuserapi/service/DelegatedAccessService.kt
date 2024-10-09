@@ -154,4 +154,26 @@ class DelegatedAccessService(private val delegatedAccessRepository: DelegatedAcc
     }
     return accessPermissionList
   }
+
+  @Transactional
+  fun getActiveAccessByUserIdAndDelegatedUserId(initiatedUserId: Long, delegatedUserId: Long): DelegatedAccessEntity? {
+    val access = delegatedAccessRepository.findByInitiatedUserIdAndDelegatedUserIdAndDeletedDateIsNull(
+      initiatedUserId,
+      delegatedUserId,
+    )
+    return access
+  }
+
+  @Transactional
+  fun getActiveAccessPermissionByUserIdAndDelegatedUserId(initiatedUserId: Long, delegatedUserId: Long): List<DelegatedAccessPermissionEntity>? {
+    val initiatedUser = userRepository.findByIdAndVerified(initiatedUserId, true) ?: throw ResourceNotFoundException("User with id $initiatedUserId is not a verified or not found in database")
+    val delegatedUser = userRepository.findByIdAndVerified(delegatedUserId, false) ?: throw ResourceNotFoundException("User with id $delegatedUserId not found in database ")
+    val access = getActiveAccessByUserIdAndDelegatedUserId(initiatedUser.id!!, delegatedUser.id!!)
+    val accessPermissionList = access?.id?.let {
+      delegatedAccessPermissionRepository.findByDelegatedAccessIdAndGrantedIsNotNullAndRevokedIsNull(
+        it,
+      )
+    }
+    return accessPermissionList
+  }
 }

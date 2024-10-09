@@ -532,4 +532,50 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @Parameter(required = true)
     userid: Long,
   ) = delegatedService.getActiveAccessPermissionByDelegatedUserId(userid)
+
+  @GetMapping("/access/{userid}/permission/{delegatedUserid}", produces = [MediaType.APPLICATION_JSON_VALUE])
+  @Operation(summary = "Get delegated permission list between probation userid and non-probation user id", description = "All delegated permission list between probation userid and non-probation user id ")
+  @ApiResponses(
+    value = [
+      ApiResponse(
+        responseCode = "200",
+        description = "Successful Operation",
+      ),
+      ApiResponse(
+        responseCode = "404",
+        description = "Not found",
+        content = [Content(mediaType = MediaType.APPLICATION_JSON_VALUE)],
+      ),
+      ApiResponse(
+        responseCode = "401",
+        description = "Unauthorized to access this endpoint",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+      ApiResponse(
+        responseCode = "403",
+        description = "Forbidden, requires an appropriate role",
+        content = [
+          Content(
+            mediaType = "application/json",
+            schema = Schema(implementation = ErrorResponse::class),
+          ),
+        ],
+      ),
+      ApiResponse(
+        responseCode = "400",
+        description = "Incorrect input options provided",
+        content = [Content(mediaType = "application/json", schema = Schema(implementation = ErrorResponse::class))],
+      ),
+    ],
+  )
+  fun getAccessPermissionListByUserIdAndDelegatedUserId(
+    @Schema(example = "123", required = true)
+    @PathVariable("userid")
+    @Parameter(required = true)
+    userid: Long,
+    @Schema(example = "123", required = true)
+    @PathVariable("delegatedUserid")
+    @Parameter(required = true)
+    delegatedUserid: Long,
+  ) = delegatedService.getActiveAccessPermissionByUserIdAndDelegatedUserId(userid, delegatedUserid)
 }

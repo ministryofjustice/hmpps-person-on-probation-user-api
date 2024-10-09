@@ -126,6 +126,14 @@ class DelegatedAccessIntegrationTest : IntegrationTestBase() {
       .expectBody()
       .json(expectedOutput4)
 
+    webTestClient.get()
+      .uri("/person-on-probation-user/access/$userid/permission/$delegatedUserId")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isOk
+      .expectBody()
+      .json(expectedOutput4)
+
     webTestClient.delete()
       .uri("/person-on-probation-user/revoke/permission/$userid")
       .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
@@ -173,6 +181,22 @@ class DelegatedAccessIntegrationTest : IntegrationTestBase() {
           "delegatedUserId" to "243455",
         ),
       )
+      .exchange()
+      .expectStatus().isNotFound
+  }
+
+  @Test
+  @Sql("classpath:testdata/sql/seed-2-user.sql")
+  fun `Gives 404 if delegatedUser or InitiatedUser does not exist`() {
+    webTestClient.get()
+      .uri("/person-on-probation-user/access/1/permission/23455")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
+      .exchange()
+      .expectStatus().isNotFound
+
+    webTestClient.get()
+      .uri("/person-on-probation-user/access/23455/permission/2")
+      .headers(setAuthorisation(roles = listOf("ROLE_RESETTLEMENT_PASSPORT_EDIT")))
       .exchange()
       .expectStatus().isNotFound
   }
