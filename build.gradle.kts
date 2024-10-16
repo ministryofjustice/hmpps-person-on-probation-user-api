@@ -1,10 +1,10 @@
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
-  val kotlinVersion = "2.0.10"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.5"
+  val kotlinVersion = "2.0.21"
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.6"
   kotlin("plugin.spring") version kotlinVersion
-  id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
+  id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
   id("jacoco")
   id("org.sonarqube") version "4.0.0.2929"
   kotlin("plugin.jpa") version kotlinVersion
@@ -35,7 +35,7 @@ dependencies {
 
   runtimeOnly("org.flywaydb:flyway-database-postgresql")
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
-  runtimeOnly("org.postgresql:postgresql:42.7.3")
+  runtimeOnly("org.postgresql:postgresql:42.7.4")
 
   implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
@@ -60,7 +60,7 @@ dependencies {
   testImplementation("org.mockito:mockito-inline:5.2.0")
   testImplementation("io.swagger.parser.v3:swagger-parser:2.1.19")
   testImplementation("org.springframework.security:spring-security-test")
-  testImplementation("org.wiremock:wiremock-standalone:3.5.3")
+  testImplementation("org.wiremock:wiremock-standalone:3.9.1")
   testImplementation("org.testcontainers:postgresql")
   testImplementation("io.projectreactor:reactor-test")
   testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
@@ -68,7 +68,7 @@ dependencies {
   testImplementation("io.opentelemetry:opentelemetry-sdk-testing:1.34.1")
   testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
   testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-  testImplementation("io.mockk:mockk:1.13.10")
+  testImplementation("io.mockk:mockk:1.13.13")
 
   if (project.hasProperty("docs")) {
     implementation("com.h2database:h2")
