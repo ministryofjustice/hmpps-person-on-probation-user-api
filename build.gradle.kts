@@ -2,11 +2,11 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
   val kotlinVersion = "2.0.21"
-  id("uk.gov.justice.hmpps.gradle-spring-boot") version "6.0.6"
-  kotlin("plugin.spring") version kotlinVersion
+  id("uk.gov.justice.hmpps.gradle-spring-boot") version "8.1.0"
   id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
   id("jacoco")
   id("org.sonarqube") version "4.0.0.2929"
+  kotlin("plugin.spring") version kotlinVersion
   kotlin("plugin.jpa") version kotlinVersion
   kotlin("plugin.serialization") version kotlinVersion
 }
@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-  implementation("javax.servlet:javax.servlet-api:4.0.1")
+  annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
   implementation("org.springframework.boot:spring-boot-starter-webflux")
   implementation("org.springframework.boot:spring-boot-starter-security")
@@ -37,7 +37,7 @@ dependencies {
   runtimeOnly("org.springframework.boot:spring-boot-starter-jdbc")
   runtimeOnly("org.postgresql:postgresql:42.7.4")
 
-  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+  implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.4")
 
   implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
   implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -51,6 +51,8 @@ dependencies {
   implementation("org.json:json:20240303")
 
   implementation("com.pauldijou:jwt-core_2.11:5.0.0")
+
+  implementation("uk.gov.justice.service.hmpps:hmpps-kotlin-spring-boot-starter:1.1.1")
 
   developmentOnly("org.springframework.boot:spring-boot-devtools")
 

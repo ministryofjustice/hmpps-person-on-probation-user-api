@@ -107,9 +107,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @PathVariable("accessId")
     @Parameter(required = true)
     accessId: Long,
-  ): DelegatedAccessEntity? {
-    return delegatedService.removeDelegatedAccess(accessId)
-  }
+  ): DelegatedAccessEntity? = delegatedService.removeDelegatedAccess(accessId)
 
   @GetMapping("/all/access/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
   @Operation(summary = "Get all delegated access list by person on probation user id", description = "Person on Probation User All Delegated access")
@@ -277,9 +275,7 @@ class DelegatedAccessResourceController(private val delegatedService: DelegatedA
     @PathVariable("accessId")
     @Parameter(required = true)
     accessId: Long,
-  ): DelegatedAccessPermissionEntity? {
-    return delegatedService.revokeDelegatedAccessPermission(accessId, 1)
-  }
+  ): DelegatedAccessPermissionEntity? = delegatedService.revokeDelegatedAccessPermission(accessId, 1)
 
   @GetMapping("/all/permission/{userid}", produces = [MediaType.APPLICATION_JSON_VALUE])
   @Operation(summary = "Get all delegated permission list by person on probation user id", description = "Person on Probation User Delegated permissions")

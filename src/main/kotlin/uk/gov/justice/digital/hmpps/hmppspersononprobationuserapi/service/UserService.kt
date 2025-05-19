@@ -10,7 +10,6 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.data.UserPost
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.UserEntity
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.repository.UserRepository
 import java.time.LocalDateTime
-import java.util.*
 
 @Service
 class UserService(private val userRepository: UserRepository) {
@@ -36,9 +35,14 @@ class UserService(private val userRepository: UserRepository) {
     val now = LocalDateTime.now()
 
     if ((
-        userPost.verified == true && userPost.crn != null && userPost.cprId != null && userPost.verified != null &&
-          userPost.nomsId != null && userPost.oneLoginUrn != null
-        ) || (userPost.verified == false && userPost.oneLoginUrn != null)
+        userPost.verified == true &&
+          userPost.crn != null &&
+          userPost.cprId != null &&
+          userPost.verified != null &&
+          userPost.nomsId != null &&
+          userPost.oneLoginUrn != null
+        ) ||
+      (userPost.verified == false && userPost.oneLoginUrn != null)
     ) {
       val userExistsWithURN = userRepository.findByOneLoginUrn(userPost.oneLoginUrn!!)
       if (userExistsWithURN != null) {
