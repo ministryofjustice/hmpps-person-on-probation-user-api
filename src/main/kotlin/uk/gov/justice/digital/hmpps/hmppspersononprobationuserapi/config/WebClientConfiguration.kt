@@ -42,9 +42,7 @@ class WebClientConfiguration(
   }
 
   @Bean
-  fun rpWebClientClientCredentials(authorizedClientManager: OAuth2AuthorizedClientManager): WebClient {
-    return getWebClientCredentials(authorizedClientManager, rpRootUri)
-  }
+  fun rpWebClientClientCredentials(authorizedClientManager: OAuth2AuthorizedClientManager): WebClient = getWebClientCredentials(authorizedClientManager, rpRootUri)
   private fun getWebClientCredentials(authorizedClientManager: OAuth2AuthorizedClientManager, baseUrl: String): WebClient {
     val oauth2Client = ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager)
     oauth2Client.setDefaultClientRegistrationId(SYSTEM_USERNAME)

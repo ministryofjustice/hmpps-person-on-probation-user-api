@@ -151,11 +151,9 @@ class DelegatedUserOTPResourceController(private val delegatedUserOTPService: De
     userid: Long,
     @RequestParam(value = "email")
     email: String = null.toString(),
-  ): List<DelegatedUserOTPEntity> {
-    return if (email != "null" && email.isNotEmpty() && email.isNotBlank()) {
-      delegatedUserOTPService.getUserOTPByUserIdAndEmail(userid, email)
-    } else {
-      delegatedUserOTPService.getUserOTPByUserId(userid)
-    }
+  ): List<DelegatedUserOTPEntity> = if (email != "null" && email.isNotEmpty() && email.isNotBlank()) {
+    delegatedUserOTPService.getUserOTPByUserIdAndEmail(userid, email)
+  } else {
+    delegatedUserOTPService.getUserOTPByUserId(userid)
   }
 }

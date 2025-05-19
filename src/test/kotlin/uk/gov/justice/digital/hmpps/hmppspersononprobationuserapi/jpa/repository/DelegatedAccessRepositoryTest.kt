@@ -1,12 +1,10 @@
 package uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.repository
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.helpers.TestBase
@@ -14,9 +12,9 @@ import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.Del
 import uk.gov.justice.digital.hmpps.hmppspersononprobationuserapi.jpa.entity.UserEntity
 import java.time.LocalDateTime
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
-@Sql(scripts = ["classpath:testdata/sql/clear-all-data.sql"], executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = ["classpath:testdata/sql/clear-all-data.sql"], executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class DelegatedAccessRepositoryTest : TestBase() {
 
   @Autowired
@@ -24,12 +22,6 @@ class DelegatedAccessRepositoryTest : TestBase() {
 
   @Autowired
   lateinit var delegatedAccessRepository: DelegatedAccessRepository
-
-  @BeforeEach
-  @AfterEach
-  fun beforeEach() {
-    delegatedAccessRepository.deleteAll()
-  }
 
   @Test
   fun `test get saved delegated access`() {
@@ -54,6 +46,6 @@ class DelegatedAccessRepositoryTest : TestBase() {
 
     val assessmentFromDatabase = delegatedAccessRepository.findAll()[0]
 
-    Assertions.assertThat(assessmentFromDatabase).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime::class.java).isEqualTo(delegatedAccessEntity)
+    assertThat(assessmentFromDatabase).usingRecursiveComparison().ignoringFieldsOfTypes(LocalDateTime::class.java).isEqualTo(delegatedAccessEntity)
   }
 }
