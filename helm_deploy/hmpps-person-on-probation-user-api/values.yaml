@@ -1,6 +1,11 @@
 generic-service:
   nameOverride: hmpps-person-on-probation-user-api
   productId: "" # productId for the product that this belongs too, i.e. DPS001, see README.md for details
+  resources:
+    requests:
+      cpu: 250m
+    limits:
+      cpu: 500m
 
   replicaCount: 4
 
