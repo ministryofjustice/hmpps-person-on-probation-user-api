@@ -35,7 +35,7 @@ generic-service:
     hmpps-person-on-probation-user-api:
       PERSON_ON_PROBATION_API_CLIENT_ID: "SYSTEM_CLIENT_ID"
       PERSON_ON_PROBATION_API_CLIENT_SECRET: "SYSTEM_CLIENT_SECRET"
-    application-insights:
+    hmpps-person-on-probation-user-api-application-insights:
       APPLICATIONINSIGHTS_CONNECTION_STRING: "APPLICATIONINSIGHTS_CONNECTION_STRING"
     rds-postgresql-instance-output:
       DATABASE_USERNAME: "database_username"
