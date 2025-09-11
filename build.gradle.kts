@@ -6,6 +6,7 @@ plugins {
   id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
   id("jacoco")
   id("org.sonarqube") version "6.2.0.5505"
+  id("org.owasp.dependencycheck") version "12.1.3"
   kotlin("plugin.spring") version kotlinVersion
   kotlin("plugin.jpa") version kotlinVersion
   kotlin("plugin.serialization") version kotlinVersion
@@ -103,4 +104,8 @@ tasks.jacocoTestReport {
 tasks.named<BootRun>("bootRun") {
   systemProperty("spring.profiles.active", project.findProperty("profiles")?.toString() ?: "dev")
   systemProperty("server.port", project.findProperty("port")?.toString() ?: "8080")
+}
+
+dependencyCheck {
+  nvd.datafeedUrl = "file:///opt/vulnz/cache"
 }
