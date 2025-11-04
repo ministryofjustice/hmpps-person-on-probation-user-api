@@ -9,6 +9,22 @@ generic-service:
     API_BASE_URL_OAUTH: https://sign-in.hmpps.service.justice.gov.uk/auth
     API_BASE_URL_RESETTLEMENTPASSPORT: https://resettlement-passport-api.hmpps.service.justice.gov.uk
 
+  # Enable syncing the production database to pre-prod. This creates a scheduled job that runs every 4 hours, and will
+  # restore the PyF database to pre-prod if that is a newer version of the NOMIS database since the last restore.
+  postgresDatabaseRestore:
+    enabled: true
+    namespace_secrets:
+      rds-instance-output:
+        DB_NAME: "database_name"
+        DB_USER: "database_username"
+        DB_PASS: "database_password"
+        DB_HOST: "rds_instance_address"
+      rds-instance-output-preprod:
+        DB_NAME_PREPROD: "database_name"
+        DB_USER_PREPROD: "database_username"
+        DB_PASS_PREPROD: "database_password"
+        DB_HOST_PREPROD: "rds_instance_address"
+
 
 # CloudPlatform AlertManager receiver to route prometheus alerts to slack
 # See https://user-guide.cloud-platform.service.justice.gov.uk/documentation/monitoring-an-app/how-to-create-alarms.html#creating-your-own-custom-alerts
